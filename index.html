@@ -6,218 +6,353 @@
 <title>Stay Healthy</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=Figtree:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&display=swap">
 <style>
-  /* Layout: phone-first single column; summary + weight side by side on wide screens, meals in a 2-up grid. */
+  /* Layout: app-style single column (max 560px) — sticky header with week strip, green hero ring,
+     macro tiles, meal lists, weight card; a floating "Add food" button opens a bottom sheet. */
   :root {
-    --bg: #f3f5f2;
+    --bg: #eef2ee;
     --surface: #ffffff;
-    --fg: #17201b;
-    --muted: #66726b;
-    --line: #e1e6e1;
-    --accent: #0f7a5c;
+    --surface-2: #f5f8f5;
+    --fg: #14201a;
+    --muted: #6b7a72;
+    --line: #e2e8e3;
+    --accent: #0e7a5a;
+    --accent-soft: #dcefe6;
     --accent-ink: #ffffff;
-    --protein: #e0603e;
-    --carbs: #d99a1e;
-    --fat: #3b7dd8;
-    --danger: #c9372c;
-    --shadow: 0 1px 2px rgba(23, 32, 27, .05), 0 6px 20px rgba(23, 32, 27, .06);
+    --hero-a: #0b5d45;
+    --hero-b: #13906a;
+    --hero-fg: #ffffff;
+    --hero-muted: rgba(255, 255, 255, .72);
+    --hero-track: rgba(255, 255, 255, .18);
+    --hero-glow: #b9f5a8;
+    --carbs: #e9a21c;
+    --protein: #e5603f;
+    --fat: #3a7fe0;
+    --danger: #d23b2f;
+    --good: #0e7a5a;
+    --shadow: 0 1px 2px rgba(20, 32, 26, .04), 0 8px 24px rgba(20, 32, 26, .07);
     --font-display: "Bricolage Grotesque", "Avenir Next", system-ui, sans-serif;
     --font-body: "Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
-    --radius: 18px;
   }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
-      --bg: #0e1411; --surface: #172019; --fg: #e8eee9; --muted: #93a19a; --line: #26322b;
-      --accent: #3cc497; --accent-ink: #062218;
-      --protein: #f07c5c; --carbs: #f0b440; --fat: #6aa2f0; --danger: #f06a5f;
-      --shadow: 0 1px 2px rgba(0, 0, 0, .35);
+      --bg: #0c120f; --surface: #151d18; --surface-2: #1b251f; --fg: #e9efea; --muted: #93a39a; --line: #243029;
+      --accent: #3fcf9c; --accent-soft: #173a2d; --accent-ink: #052016;
+      --hero-a: #0f3d2f; --hero-b: #155f48; --hero-fg: #f2fff8; --hero-muted: rgba(242, 255, 248, .7);
+      --hero-track: rgba(255, 255, 255, .12); --hero-glow: #a6f08f;
+      --carbs: #f2b443; --protein: #f27d5e; --fat: #6ea5f2; --danger: #f2685c; --good: #3fcf9c;
+      --shadow: 0 1px 2px rgba(0, 0, 0, .4);
       color-scheme: dark;
     }
   }
   :root[data-theme="dark"] {
-    --bg: #0e1411; --surface: #172019; --fg: #e8eee9; --muted: #93a19a; --line: #26322b;
-    --accent: #3cc497; --accent-ink: #062218;
-    --protein: #f07c5c; --carbs: #f0b440; --fat: #6aa2f0; --danger: #f06a5f;
-    --shadow: 0 1px 2px rgba(0, 0, 0, .35);
+    --bg: #0c120f; --surface: #151d18; --surface-2: #1b251f; --fg: #e9efea; --muted: #93a39a; --line: #243029;
+    --accent: #3fcf9c; --accent-soft: #173a2d; --accent-ink: #052016;
+    --hero-a: #0f3d2f; --hero-b: #155f48; --hero-fg: #f2fff8; --hero-muted: rgba(242, 255, 248, .7);
+    --hero-track: rgba(255, 255, 255, .12); --hero-glow: #a6f08f;
+    --carbs: #f2b443; --protein: #f27d5e; --fat: #6ea5f2; --danger: #f2685c; --good: #3fcf9c;
+    --shadow: 0 1px 2px rgba(0, 0, 0, .4);
     color-scheme: dark;
   }
-  * { box-sizing: border-box; }
-  body { background: var(--bg); color: var(--fg); font: 15px/1.45 var(--font-body); }
-  .wrap { max-width: 960px; margin: 0 auto; padding: 18px 16px 48px; display: grid; gap: 16px; }
-  h1, h2 { font-family: var(--font-display); margin: 0; text-wrap: balance; }
-  h1 { font-size: 26px; letter-spacing: -.02em; }
-  h2 { font-size: 17px; letter-spacing: -.01em; }
-  .muted { color: var(--muted); }
-  .num { font-variant-numeric: tabular-nums; }
 
-  header { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
-  .sync { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted); margin-top: 4px; }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  body { background: var(--bg); color: var(--fg); font: 15px/1.45 var(--font-body); }
+  .app { max-width: 560px; margin: 0 auto; padding: 0 16px 120px; display: grid; gap: 14px; }
+  h1, h2, h3 { font-family: var(--font-display); margin: 0; letter-spacing: -.02em; text-wrap: balance; }
+  .num { font-variant-numeric: tabular-nums; }
+  .muted { color: var(--muted); }
+  button, input { font: inherit; color: inherit; }
+  button { cursor: pointer; border: 0; background: none; transition: transform .12s ease, background .2s, opacity .2s; }
+  button:active { transform: scale(.96); }
+  button:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  /* Header + week strip */
+  .top {
+    position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5;
+    margin: 0 -16px; padding: 14px 16px 10px;
+    background: color-mix(in srgb, var(--bg) 86%, transparent);
+    backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  }
+  .bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .brand h1 { font-size: 24px; font-weight: 800; }
+  .sync { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted); }
   .sync::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--muted); }
-  .sync[data-state="ok"]::before { background: var(--accent); }
+  .sync[data-state="ok"]::before { background: var(--good); box-shadow: 0 0 0 3px var(--accent-soft); }
   .sync[data-state="err"] { color: var(--danger); }
   .sync[data-state="err"]::before { background: var(--danger); }
-  .date-nav { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
-  .date-nav input { width: auto; flex: 1; min-width: 0; }
-
-  button, input { font: inherit; color: inherit; }
-  button {
-    border: 1px solid var(--line); background: var(--surface); border-radius: 12px;
-    padding: 9px 13px; cursor: pointer; min-height: 40px;
+  .icon-btn {
+    width: 42px; height: 42px; border-radius: 14px; display: grid; place-items: center;
+    background: var(--surface); box-shadow: var(--shadow); color: var(--fg);
   }
-  button:hover { border-color: var(--accent); }
-  button:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
-  button.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); font-weight: 600; }
-  button.icon { padding: 6px 12px; font-size: 18px; line-height: 1; }
-  button.ghost { border-color: transparent; background: transparent; color: var(--muted); min-height: 32px; padding: 4px 8px; }
-  button.ghost:hover { color: var(--danger); }
-  input { width: 100%; border: 1px solid var(--line); background: var(--bg); border-radius: 12px; padding: 9px 11px; min-height: 40px; }
+  .icon-btn svg { width: 20px; height: 20px; }
+  .month { display: flex; align-items: center; justify-content: space-between; margin-top: 14px; }
+  .month b { font-family: var(--font-display); font-size: 15px; }
+  .month .nav { display: flex; gap: 4px; align-items: center; }
+  .chip { font-size: 12px; font-weight: 600; padding: 6px 12px; border-radius: 99px; background: var(--accent-soft); color: var(--accent); }
+  .arrow { width: 32px; height: 32px; border-radius: 10px; display: grid; place-items: center; color: var(--muted); }
+  .arrow:hover { background: var(--surface); color: var(--fg); }
+  .week { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; margin-top: 8px; }
+  .wd {
+    display: grid; gap: 2px; justify-items: center; padding: 8px 0 9px; border-radius: 16px;
+    background: var(--surface); color: var(--muted); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .04em;
+  }
+  .wd b { font-family: var(--font-display); font-size: 17px; color: var(--fg); letter-spacing: -.01em; }
+  .wd .tick { width: 4px; height: 4px; border-radius: 50%; background: transparent; }
+  .wd.has .tick { background: var(--accent); }
+  .wd.today b { color: var(--accent); }
+  .wd.sel { background: var(--accent); color: var(--accent-ink); box-shadow: 0 6px 16px color-mix(in srgb, var(--accent) 35%, transparent); }
+  .wd.sel b { color: var(--accent-ink); }
+  .wd.sel .tick { background: var(--accent-ink); }
 
-  .card { background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow); padding: 18px; min-width: 0; }
-  .top { display: grid; gap: 16px; grid-template-columns: 1.25fr 1fr; align-items: start; }
-  .meals { display: grid; gap: 16px; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; }
-  @media (max-width: 720px) { .top, .meals { grid-template-columns: 1fr; } }
-
-  /* Summary */
-  .summary { display: flex; gap: 20px; align-items: center; flex-wrap: wrap; margin-top: 14px; }
-  .ring { position: relative; width: 136px; height: 136px; flex: none; }
-  .ring svg { transform: rotate(-90deg); display: block; }
+  /* Hero */
+  .hero {
+    border-radius: 28px; padding: 22px; color: var(--hero-fg);
+    background: radial-gradient(120% 90% at 100% 0%, var(--hero-b) 0%, var(--hero-a) 62%);
+    display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 20px; align-items: center;
+    box-shadow: 0 14px 34px color-mix(in srgb, var(--hero-a) 38%, transparent);
+  }
+  .ring { position: relative; width: 150px; height: 150px; }
+  .ring svg { display: block; transform: rotate(-90deg); }
   .ring .center { position: absolute; inset: 0; display: grid; place-content: center; text-align: center; }
-  .ring .big { font-family: var(--font-display); font-size: 30px; font-weight: 700; letter-spacing: -.02em; line-height: 1; }
-  .ring .small { font-size: 12px; color: var(--muted); margin-top: 4px; }
-  .macros { flex: 1; min-width: 190px; display: grid; gap: 12px; }
-  .macro .row { display: flex; justify-content: space-between; gap: 8px; font-size: 13px; margin-bottom: 5px; }
-  .bar { height: 8px; background: var(--line); border-radius: 99px; overflow: hidden; }
-  .bar > span { display: block; height: 100%; border-radius: 99px; transition: width .3s; }
-  .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; vertical-align: 1px; }
-  .over { color: var(--danger); font-weight: 600; }
-  .hint { font-size: 12px; color: var(--muted); margin: 14px 0 0; }
+  .ring .big { font-family: var(--font-display); font-size: 36px; font-weight: 800; line-height: 1; letter-spacing: -.03em; }
+  .ring .small { font-size: 12px; color: var(--hero-muted); margin-top: 4px; }
+  .hero-side { display: grid; gap: 12px; min-width: 0; }
+  .hero-side .lbl { font-size: 11px; text-transform: uppercase; letter-spacing: .08em; color: var(--hero-muted); }
+  .hero-side .val { font-family: var(--font-display); font-size: 22px; font-weight: 700; letter-spacing: -.02em; }
+  .hero-side .val small { font-family: var(--font-body); font-size: 13px; font-weight: 500; color: var(--hero-muted); letter-spacing: 0; }
+  .hero-side .over { color: #ffd0c8; }
+  @media (max-width: 380px) { .hero { grid-template-columns: 1fr; justify-items: center; text-align: center; } }
 
-  /* Weight */
-  .weight-form { display: flex; gap: 8px; margin: 12px 0; }
-  .weight-form input { flex: 1; min-width: 0; }
-  .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; font-size: 12px; }
-  .stats b { display: block; font-family: var(--font-display); font-size: 19px; color: var(--fg); }
-  #weightChart { width: 100%; height: 96px; display: block; margin-top: 12px; }
+  /* Macro tiles */
+  .tiles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+  .tile { background: var(--surface); border-radius: 22px; padding: 14px 12px; box-shadow: var(--shadow); display: grid; gap: 8px; justify-items: start; min-width: 0; }
+  .mini { width: 46px; height: 46px; position: relative; }
+  .mini svg { transform: rotate(-90deg); display: block; }
+  .mini span { position: absolute; inset: 0; display: grid; place-items: center; font-size: 11px; font-weight: 700; }
+  .tile .name { font-size: 12px; color: var(--muted); font-weight: 600; }
+  .tile .amt { font-family: var(--font-display); font-size: 18px; font-weight: 700; letter-spacing: -.02em; line-height: 1.1; }
+  .tile .amt small { font-family: var(--font-body); font-size: 12px; color: var(--muted); font-weight: 500; letter-spacing: 0; }
+  .tile .left { font-size: 12px; color: var(--muted); }
+  .tile .left.over { color: var(--danger); font-weight: 600; }
+
+  /* Generic card */
+  .card { background: var(--surface); border-radius: 24px; padding: 18px; box-shadow: var(--shadow); min-width: 0; }
+  .card-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+  .card-head h2 { font-size: 17px; }
+  .sub { font-size: 12px; color: var(--muted); }
+
+  /* Split */
+  .split { display: grid; gap: 10px; margin-top: 12px; }
+  .split-row { display: grid; grid-template-columns: 52px minmax(0, 1fr); gap: 10px; align-items: center; font-size: 12px; color: var(--muted); }
+  .stack { display: flex; height: 10px; border-radius: 99px; overflow: hidden; background: var(--surface-2); gap: 2px; }
+  .stack span { height: 100%; border-radius: 99px; transition: width .4s ease; }
+  .legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 12px; color: var(--muted); }
+  .legend b { color: var(--fg); }
+  .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; vertical-align: 1px; }
 
   /* Meals */
-  .meal-head { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; margin-bottom: 8px; }
-  .meal-head h2 { display: flex; align-items: baseline; gap: 8px; }
-  .meal-head .when { font-family: var(--font-body); font-size: 11px; font-weight: 500; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; }
-  .food { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; gap: 8px; align-items: center; padding: 9px 0; border-top: 1px solid var(--line); }
-  .food .name { font-weight: 500; overflow-wrap: anywhere; }
-  .food .sub { font-size: 12px; color: var(--muted); }
-  .food .kc { font-weight: 600; white-space: nowrap; }
-  .empty { font-size: 13px; color: var(--muted); padding: 10px 0; border-top: 1px solid var(--line); }
-  .add-form { display: grid; gap: 8px; margin-top: 10px; grid-template-columns: repeat(4, minmax(0, 1fr)); }
-  .add-form .full { grid-column: 1 / -1; }
-  .add-form label { font-size: 11px; color: var(--muted); display: block; margin-bottom: 3px; letter-spacing: .02em; }
-  .add-form .actions { grid-column: 1 / -1; display: flex; gap: 8px; }
-  .add-form .actions .primary { flex: 1; }
-  @media (max-width: 400px) { .add-form { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-  .add-btn { width: 100%; margin-top: 10px; border-style: dashed; color: var(--muted); }
+  .section-title { display: flex; justify-content: space-between; align-items: baseline; padding: 6px 4px 0; }
+  .section-title h2 { font-size: 19px; }
+  .meal { padding: 14px 14px 10px; }
+  .meal-head { display: flex; align-items: center; gap: 12px; }
+  .meal-icon { width: 40px; height: 40px; border-radius: 14px; display: grid; place-items: center; background: var(--accent-soft); color: var(--accent); flex: none; }
+  .meal-icon svg { width: 20px; height: 20px; }
+  .meal-head .t { flex: 1; min-width: 0; }
+  .meal-head h3 { font-size: 16px; }
+  .add-sm { width: 36px; height: 36px; border-radius: 12px; background: var(--surface-2); color: var(--accent); font-size: 22px; line-height: 1; display: grid; place-items: center; }
+  .items { margin-top: 6px; }
+  .item { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; gap: 8px; align-items: center; padding: 10px 2px; border-top: 1px solid var(--line); }
+  .item .name { font-weight: 600; overflow-wrap: anywhere; }
+  .item .m { font-size: 12px; color: var(--muted); }
+  .item .kc { font-weight: 700; white-space: nowrap; }
+  .del { width: 30px; height: 30px; border-radius: 10px; color: var(--muted); display: grid; place-items: center; }
+  .del:hover { background: var(--surface-2); color: var(--danger); }
+  .empty { font-size: 13px; color: var(--muted); padding: 8px 2px 6px; }
 
-  dialog { border: none; border-radius: var(--radius); padding: 20px; background: var(--surface); color: var(--fg); width: min(380px, calc(100% - 32px)); box-shadow: var(--shadow); }
-  dialog::backdrop { background: rgba(0, 0, 0, .4); }
-  .dlg-note { font-size: 13px; color: var(--muted); margin: 6px 0 14px; }
-  .field label { font-size: 12px; color: var(--muted); display: block; margin-bottom: 3px; }
-  .split-grid { display: grid; grid-template-columns: auto minmax(0, 1fr) minmax(0, 1fr); gap: 8px 10px; align-items: center; margin: 14px 0 8px; }
-  .split-grid > label { font-weight: 500; font-size: 14px; }
-  .col-h { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; }
-  .dlg-check { font-size: 12px; color: var(--muted); margin-bottom: 14px; min-height: 18px; }
-  .dlg-check.warn { color: var(--danger); }
+  /* Weight */
+  .weight-top { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; margin-top: 10px; flex-wrap: wrap; }
+  .weight-big { font-family: var(--font-display); font-size: 40px; font-weight: 800; letter-spacing: -.03em; line-height: 1; }
+  .weight-big small { font-family: var(--font-body); font-size: 15px; font-weight: 500; color: var(--muted); letter-spacing: 0; }
+  .delta { font-size: 12px; font-weight: 600; padding: 6px 10px; border-radius: 99px; background: var(--surface-2); color: var(--muted); }
+  .delta.down { background: var(--accent-soft); color: var(--accent); }
+  #weightChart { width: 100%; height: 84px; display: block; margin-top: 12px; }
+  .weight-form { display: flex; gap: 8px; margin-top: 12px; }
+  .field-input {
+    width: 100%; min-width: 0; border: 1.5px solid transparent; background: var(--surface-2); border-radius: 14px;
+    padding: 12px 14px; min-height: 48px; font-size: 16px; transition: border-color .2s, background .2s;
+  }
+  .field-input:focus { border-color: var(--accent); background: var(--surface); outline: none; }
+  .btn { min-height: 48px; padding: 0 20px; border-radius: 14px; font-weight: 700; }
+  .btn.primary { background: var(--accent); color: var(--accent-ink); }
+  .btn.ghost { background: var(--surface-2); }
 
-  /* Calorie split: today vs target */
-  .split { margin-top: 18px; display: grid; gap: 8px; }
-  .split-title { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; }
-  .split-row { display: grid; grid-template-columns: 48px minmax(0, 1fr); gap: 10px; align-items: center; font-size: 12px; color: var(--muted); }
-  .stack { display: flex; height: 12px; border-radius: 99px; overflow: hidden; background: var(--line); }
-  .stack span { height: 100%; transition: width .3s; }
-  .split-legend { display: flex; flex-wrap: wrap; gap: 4px 16px; font-size: 12px; color: var(--muted); }
-  .split-legend b { color: var(--fg); font-weight: 600; }
-  .dlg-actions { display: flex; justify-content: flex-end; gap: 8px; }
-  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+  /* Floating add button */
+  .fab {
+    position: fixed; left: 50%; transform: translateX(-50%); z-index: 6;
+    bottom: calc(18px + env(safe-area-inset-bottom, 0px));
+    display: inline-flex; align-items: center; gap: 8px; padding: 0 22px; height: 54px; border-radius: 99px;
+    background: var(--fg); color: var(--bg); font-weight: 700; font-size: 15px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, .25);
+  }
+  .fab:active { transform: translateX(-50%) scale(.96); }
+  .fab svg { width: 18px; height: 18px; }
+
+  /* Bottom sheets */
+  dialog.sheet {
+    border: 0; padding: 0; margin: auto auto 0; width: 100%; max-width: 560px; max-height: 92vh;
+    background: var(--surface); color: var(--fg); border-radius: 28px 28px 0 0;
+    box-shadow: 0 -10px 40px rgba(0, 0, 0, .2); overflow-y: auto;
+  }
+  dialog.sheet[open] { animation: up .28s cubic-bezier(.2, .8, .2, 1); }
+  dialog.sheet::backdrop { background: rgba(8, 14, 11, .45); backdrop-filter: blur(2px); }
+  @keyframes up { from { transform: translateY(100%); } to { transform: none; } }
+  .sheet-body { padding: 10px 20px calc(20px + env(safe-area-inset-bottom, 0px)); display: grid; gap: 14px; }
+  .grab { width: 40px; height: 5px; border-radius: 99px; background: var(--line); margin: 0 auto 4px; }
+  .sheet h2 { font-size: 20px; }
+  .seg { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; background: var(--surface-2); padding: 4px; border-radius: 14px; }
+  .seg button { padding: 9px 0; border-radius: 10px; font-size: 13px; font-weight: 600; color: var(--muted); }
+  .seg button[aria-pressed="true"] { background: var(--surface); color: var(--fg); box-shadow: var(--shadow); }
+  .grid2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .fld label { display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; color: var(--muted); margin-bottom: 5px; }
+  .estimate { font-size: 13px; color: var(--muted); background: var(--surface-2); border-radius: 12px; padding: 10px 12px; }
+  .estimate b { color: var(--fg); }
+  .sheet-actions { display: grid; grid-template-columns: auto 1fr; gap: 10px; }
+  .targets { display: grid; grid-template-columns: auto minmax(0, 1fr) minmax(0, 1fr); gap: 8px 10px; align-items: center; }
+  .targets .h { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; font-weight: 600; }
+  .targets > label { font-weight: 600; font-size: 14px; display: flex; align-items: center; }
+  .check { font-size: 12px; color: var(--muted); }
+  .check.warn { color: var(--danger); font-weight: 600; }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+  }
 </style>
 </head>
 <body>
 
-<div class="wrap">
-  <header>
-    <div>
-      <h1>Stay Healthy</h1>
-      <div class="muted" id="dateLabel"></div>
-      <div class="sync" id="sync" data-state="wait">Connecting…</div>
-    </div>
-    <div class="date-nav">
-      <button class="icon" id="prevDay" aria-label="Previous day">&#8249;</button>
-      <input type="date" id="datePicker" aria-label="Pick a date">
-      <button class="icon" id="nextDay" aria-label="Next day">&#8250;</button>
-      <button id="todayBtn">Today</button>
-      <button id="goalsBtn">Goals</button>
-    </div>
-  </header>
-
+<div class="app">
   <div class="top">
-    <section class="card">
-      <h2>Daily summary</h2>
-      <div class="summary">
-        <div class="ring">
-          <svg width="136" height="136" viewBox="0 0 136 136" aria-hidden="true">
-            <circle cx="68" cy="68" r="58" fill="none" stroke="var(--line)" stroke-width="12"/>
-            <circle id="ringFg" cx="68" cy="68" r="58" fill="none" stroke="var(--accent)" stroke-width="12"
-                    stroke-linecap="round" stroke-dasharray="364.42" stroke-dashoffset="364.42"
-                    style="transition: stroke-dashoffset .4s"/>
-          </svg>
-          <div class="center">
-            <div class="big num" id="kcalEaten">0</div>
-            <div class="small num" id="kcalLeft">kcal</div>
-          </div>
-        </div>
-        <div class="macros" id="macroBars"></div>
+    <div class="bar">
+      <div class="brand">
+        <h1>Stay Healthy</h1>
+        <div class="sync" id="sync" data-state="wait">Connecting…</div>
       </div>
-      <div class="split" id="splitView"></div>
-      <p class="hint">Leave kcal blank when adding food and it's worked out from macros: 4 kcal per g protein and carbs, 9 per g fat.</p>
-    </section>
-
-    <section class="card">
-      <h2>Body weight</h2>
-      <form class="weight-form" id="weightForm">
-        <input type="number" inputmode="decimal" step="0.1" min="0" id="weightInput" placeholder="Weight in kg" aria-label="Weight in kg">
-        <button class="primary" type="submit">Save</button>
-      </form>
-      <div class="stats muted">
-        <div>This day<b class="num" id="wToday">–</b></div>
-        <div>Last 30 days<b class="num" id="wChange">–</b></div>
-        <div>Entries<b class="num" id="wCount">0</b></div>
+      <button class="icon-btn" id="goalsBtn" aria-label="Daily targets">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.2" fill="currentColor"/></svg>
+      </button>
+    </div>
+    <div class="month">
+      <b id="monthLabel"></b>
+      <div class="nav">
+        <button class="chip" id="todayBtn" hidden>Today</button>
+        <button class="arrow" id="prevWeek" aria-label="Previous week">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M15 6l-6 6 6 6"/></svg>
+        </button>
+        <button class="arrow" id="nextWeek" aria-label="Next week">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg>
+        </button>
       </div>
-      <svg id="weightChart" viewBox="0 0 300 96" preserveAspectRatio="none" aria-label="Weight trend, last 30 days"></svg>
-    </section>
+    </div>
+    <div class="week" id="week"></div>
   </div>
 
-  <div class="meals" id="meals"></div>
+  <section class="hero" aria-label="Calories today">
+    <div class="ring">
+      <svg width="150" height="150" viewBox="0 0 150 150" aria-hidden="true">
+        <defs>
+          <linearGradient id="ringGrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" style="stop-color: var(--hero-glow)"/>
+            <stop offset="1" style="stop-color: var(--hero-fg)"/>
+          </linearGradient>
+        </defs>
+        <circle cx="75" cy="75" r="63" fill="none" style="stroke: var(--hero-track)" stroke-width="14"/>
+        <circle id="ringFg" cx="75" cy="75" r="63" fill="none" stroke="url(#ringGrad)" stroke-width="14"
+                stroke-linecap="round" stroke-dasharray="395.84" stroke-dashoffset="395.84"
+                style="transition: stroke-dashoffset .6s cubic-bezier(.2,.8,.2,1)"/>
+      </svg>
+      <div class="center">
+        <div class="big num" id="kcalLeftBig">0</div>
+        <div class="small" id="kcalLeftLbl">kcal left</div>
+      </div>
+    </div>
+    <div class="hero-side">
+      <div><div class="lbl">Eaten</div><div class="val num" id="kcalEaten">0 <small>kcal</small></div></div>
+      <div><div class="lbl">Daily target</div><div class="val num" id="kcalGoal">0 <small>kcal</small></div></div>
+    </div>
+  </section>
+
+  <div class="tiles" id="tiles"></div>
+
+  <section class="card">
+    <div class="card-head"><h2>Calorie split</h2><span class="sub">Today vs target</span></div>
+    <div class="split" id="splitView"></div>
+  </section>
+
+  <div class="section-title"><h2>Meals</h2><span class="sub">Kcal blank? Worked out as 4 · 4 · 9 per gram</span></div>
+  <div class="grid" id="meals" style="display:grid; gap:12px"></div>
+
+  <section class="card">
+    <div class="card-head"><h2>Body weight</h2><span class="sub" id="wCount">0 entries</span></div>
+    <div class="weight-top">
+      <div class="weight-big num" id="wToday">– <small>kg</small></div>
+      <span class="delta num" id="wChange">Log 2 days to see your trend</span>
+    </div>
+    <svg id="weightChart" viewBox="0 0 300 84" preserveAspectRatio="none" aria-label="Weight trend, last 30 days"></svg>
+    <form class="weight-form" id="weightForm">
+      <input class="field-input num" type="text" inputmode="decimal" autocomplete="off" id="weightInput" placeholder="Weight in kg, e.g. 73,7" aria-label="Weight in kg">
+      <button class="btn primary" type="submit">Save</button>
+    </form>
+  </section>
 </div>
 
-<dialog id="goalsDialog">
-  <h2>Daily targets</h2>
-  <p class="dlg-note">Set your calories and how to split them. Change a % and the grams follow, or type grams and the % follows.</p>
-  <form method="dialog" id="goalsForm">
-    <div class="field"><label for="gKcal">Calories per day (kcal)</label><input type="number" inputmode="numeric" min="0" id="gKcal"></div>
-    <div class="split-grid">
-      <span></span><span class="col-h">% of kcal</span><span class="col-h">Grams</span>
-      <label for="gCarbsPct">Carbs</label>
-      <input type="number" inputmode="numeric" min="0" max="100" id="gCarbsPct" data-pct="carbs" aria-label="Carbs percent">
-      <input type="number" inputmode="numeric" min="0" id="gCarbsG" data-g="carbs" aria-label="Carbs grams">
-      <label for="gProteinPct">Protein</label>
-      <input type="number" inputmode="numeric" min="0" max="100" id="gProteinPct" data-pct="protein" aria-label="Protein percent">
-      <input type="number" inputmode="numeric" min="0" id="gProteinG" data-g="protein" aria-label="Protein grams">
-      <label for="gFatPct">Fat</label>
-      <input type="number" inputmode="numeric" min="0" max="100" id="gFatPct" data-pct="fat" aria-label="Fat percent">
-      <input type="number" inputmode="numeric" min="0" id="gFatG" data-g="fat" aria-label="Fat grams">
+<button class="fab" id="fab">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+  Add food
+</button>
+
+<dialog class="sheet" id="foodSheet" aria-labelledby="foodTitle">
+  <form class="sheet-body" id="foodForm" method="dialog">
+    <div class="grab"></div>
+    <h2 id="foodTitle">Add food</h2>
+    <div class="seg" id="mealSeg" role="group" aria-label="Meal"></div>
+    <div class="fld"><label for="fName">Food</label><input class="field-input" id="fName" name="name" required autocomplete="off" placeholder="e.g. Greek yogurt with honey"></div>
+    <div class="grid2">
+      <div class="fld"><label for="fCarbs"><span class="dot" style="background:var(--carbs)"></span>Carbs g</label><input class="field-input num" id="fCarbs" type="text" inputmode="decimal" autocomplete="off" placeholder="0"></div>
+      <div class="fld"><label for="fProtein"><span class="dot" style="background:var(--protein)"></span>Protein g</label><input class="field-input num" id="fProtein" type="text" inputmode="decimal" autocomplete="off" placeholder="0"></div>
+      <div class="fld"><label for="fFat"><span class="dot" style="background:var(--fat)"></span>Fat g</label><input class="field-input num" id="fFat" type="text" inputmode="decimal" autocomplete="off" placeholder="0"></div>
+      <div class="fld"><label for="fKcal">kcal</label><input class="field-input num" id="fKcal" type="text" inputmode="decimal" autocomplete="off" placeholder="auto"></div>
     </div>
-    <div class="dlg-check num" id="splitCheck"></div>
-    <div class="dlg-actions">
-      <button value="cancel" formnovalidate>Cancel</button>
-      <button class="primary" value="save">Save targets</button>
+    <div class="estimate num" id="estimate">Fill in the macros and kcal is worked out for you.</div>
+    <div class="sheet-actions">
+      <button class="btn ghost" type="button" data-close>Cancel</button>
+      <button class="btn primary" type="submit" id="foodSubmit">Add</button>
+    </div>
+  </form>
+</dialog>
+
+<dialog class="sheet" id="goalsSheet" aria-labelledby="goalsTitle">
+  <form class="sheet-body" id="goalsForm" method="dialog">
+    <div class="grab"></div>
+    <h2 id="goalsTitle">Daily targets</h2>
+    <p class="sub" style="margin:0">Change a % and the grams follow, or type grams and the % follows.</p>
+    <div class="fld"><label for="gKcal">Calories per day (kcal)</label><input class="field-input num" type="text" inputmode="decimal" autocomplete="off" id="gKcal"></div>
+    <div class="targets">
+      <span></span><span class="h">% of kcal</span><span class="h">Grams</span>
+      <label for="gCarbsPct"><span class="dot" style="background:var(--carbs)"></span>Carbs</label>
+      <input class="field-input num" type="text" inputmode="decimal" autocomplete="off" id="gCarbsPct" data-pct="carbs" aria-label="Carbs percent">
+      <input class="field-input num" type="text" inputmode="decimal" autocomplete="off" id="gCarbsG" data-g="carbs" aria-label="Carbs grams">
+      <label for="gProteinPct"><span class="dot" style="background:var(--protein)"></span>Protein</label>
+      <input class="field-input num" type="text" inputmode="decimal" autocomplete="off" id="gProteinPct" data-pct="protein" aria-label="Protein percent">
+      <input class="field-input num" type="text" inputmode="decimal" autocomplete="off" id="gProteinG" data-g="protein" aria-label="Protein grams">
+      <label for="gFatPct"><span class="dot" style="background:var(--fat)"></span>Fat</label>
+      <input class="field-input num" type="text" inputmode="decimal" autocomplete="off" id="gFatPct" data-pct="fat" aria-label="Fat percent">
+      <input class="field-input num" type="text" inputmode="decimal" autocomplete="off" id="gFatG" data-g="fat" aria-label="Fat grams">
+    </div>
+    <div class="check num" id="splitCheck"></div>
+    <div class="sheet-actions">
+      <button class="btn ghost" type="button" data-close>Cancel</button>
+      <button class="btn primary" type="submit">Save targets</button>
     </div>
   </form>
 </dialog>
@@ -225,11 +360,17 @@
 <script>
 (function () {
   const LOCAL_KEY = 'nutrition-tracker-v1';
+  const ICONS = {
+    breakfast: '<path d="M4 18h16M7 18a5 5 0 0110 0M12 4v3M5.6 8.6l1.8 1.8M18.4 8.6l-1.8 1.8"/>',
+    lunch: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
+    dinner: '<path d="M20 14.5A8 8 0 019.5 4a8 8 0 1010.5 10.5z"/>',
+    snack: '<path d="M12 8c-3-2-7 0-7 4.5S8 21 10 21c1 0 1.4-.5 2-.5s1 .5 2 .5c2 0 5-4 5-8.5S15 6 12 8zM12 8c0-2 1-4 3-5"/>'
+  };
   const MEALS = [
-    { id: 'breakfast', label: 'Breakfast', when: 'Morning' },
-    { id: 'lunch',     label: 'Lunch',     when: 'Midday' },
-    { id: 'dinner',    label: 'Dinner',    when: 'Evening' },
-    { id: 'snack',     label: 'Snack',     when: 'Anytime' }
+    { id: 'breakfast', label: 'Breakfast' },
+    { id: 'lunch',     label: 'Lunch' },
+    { id: 'dinner',    label: 'Dinner' },
+    { id: 'snack',     label: 'Snack' }
   ];
   const MACROS = [
     { key: 'carbs',   label: 'Carbs',   color: 'var(--carbs)' },
@@ -254,7 +395,7 @@
   let settings = { goals: Object.assign({}, DEFAULT_GOALS), weights: {} };
   const days = {};
   let currentDate = toKey(new Date());
-  let openMeal = null;
+  let sheetMeal = 'breakfast';
 
   // Storage: your account (db) when available, otherwise this browser only.
   let col = null, dayUnsub = null;
@@ -287,7 +428,7 @@
       while (q.next) {
         const body = q.next; q.next = null;
         setSync('wait', 'Saving…');
-        try { await col.doc(id).set(body); setSync('ok', 'Saved to your account'); }
+        try { await col.doc(id).set(body); setSync('ok', 'Synced to your account'); }
         catch (e) { setSync('err', e && e.code === 'quota_exceeded' ? 'Storage is full. Delete old days to save more.' : 'Not saved. Check your connection and try again.'); }
       }
       q.busy = false;
@@ -304,7 +445,7 @@
       const q = queues['day-' + k];
       if (q && (q.busy || q.next)) return; // our own write is in flight
       days[k] = snap.exists ? JSON.parse(JSON.stringify(snap.data())) : emptyDay();
-      renderSummary(); renderMeals();
+      renderDay();
     }, () => setSync('err', 'Lost connection. Reload to sync again.'));
   }
 
@@ -335,8 +476,11 @@
   }
   function fromKey(k) { const [y, m, d] = k.split('-').map(Number); return new Date(y, m - 1, d); }
   function shiftDay(k, n) { const d = fromKey(k); d.setDate(d.getDate() + n); return toKey(d); }
-  const num = v => { const n = parseFloat(v); return isFinite(n) && n >= 0 ? n : 0; };
+  // Accepts both "73.7" and "73,7".
+  const parse = v => parseFloat(String(v == null ? '' : v).trim().replace(',', '.'));
+  const num = v => { const n = parse(v); return isFinite(n) && n >= 0 ? n : 0; };
   const fmt = n => Math.round(n).toLocaleString();
+  const fmt1 = n => Number(n).toLocaleString(undefined, { maximumFractionDigits: 1, useGrouping: false });
   const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const $ = id => document.getElementById(id);
   const day = k => days[k] || (days[k] = emptyDay());
@@ -344,163 +488,212 @@
     return foods.reduce((t, f) => ({ kcal: t.kcal + f.kcal, protein: t.protein + f.protein, carbs: t.carbs + f.carbs, fat: t.fat + f.fat }),
       { kcal: 0, protein: 0, carbs: 0, fat: 0 });
   }
+  const dayHasFood = k => { const d = days[k]; return !!d && MEALS.some(m => (d[m.id] || []).length); };
 
   // ---------- Render ----------
   function renderHeader() {
-    const isToday = currentDate === toKey(new Date());
-    $('dateLabel').textContent = (isToday ? 'Today · ' : '') +
-      fromKey(currentDate).toLocaleDateString(undefined, { weekday: 'long', day: 'numeric', month: 'long' });
-    $('datePicker').value = currentDate;
+    const sel = fromKey(currentDate), today = toKey(new Date());
+    $('monthLabel').textContent = sel.toLocaleDateString(undefined, { month: 'long', year: 'numeric' });
+    $('todayBtn').hidden = currentDate === today;
+    const offset = (sel.getDay() + 6) % 7; // Monday first
+    const start = shiftDay(currentDate, -offset);
+    let html = '';
+    for (let i = 0; i < 7; i++) {
+      const k = shiftDay(start, i), d = fromKey(k);
+      const cls = ['wd', k === currentDate ? 'sel' : '', k === today ? 'today' : '', dayHasFood(k) ? 'has' : ''].join(' ');
+      html += '<button class="' + cls + '" data-day="' + k + '" aria-label="' + d.toLocaleDateString(undefined, { weekday: 'long', day: 'numeric', month: 'long' }) + '"' +
+        (k === currentDate ? ' aria-current="date"' : '') + '>' + d.toLocaleDateString(undefined, { weekday: 'narrow' }) +
+        '<b class="num">' + d.getDate() + '</b><span class="tick"></span></button>';
+    }
+    $('week').innerHTML = html;
+  }
+
+  function ring(r, stroke, pct, color, track) {
+    const c = 2 * Math.PI * r, size = (r + stroke / 2) * 2;
+    return '<svg width="' + size + '" height="' + size + '" viewBox="0 0 ' + size + ' ' + size + '" aria-hidden="true">' +
+      '<circle cx="' + size / 2 + '" cy="' + size / 2 + '" r="' + r + '" fill="none" stroke="' + track + '" stroke-width="' + stroke + '"/>' +
+      '<circle cx="' + size / 2 + '" cy="' + size / 2 + '" r="' + r + '" fill="none" stroke="' + color + '" stroke-width="' + stroke +
+      '" stroke-linecap="round" stroke-dasharray="' + c.toFixed(2) + '" stroke-dashoffset="' + (c * (1 - Math.min(pct, 1))).toFixed(2) + '"/></svg>';
   }
 
   function renderSummary() {
     const d = days[currentDate] || emptyDay();
     const t = sum(MEALS.flatMap(m => d[m.id] || []));
     const g = settings.goals;
-    const C = 2 * Math.PI * 58;
-    const pct = g.kcal ? Math.min(t.kcal / g.kcal, 1) : 0;
-    $('ringFg').style.strokeDashoffset = C * (1 - pct);
-    $('ringFg').style.stroke = g.kcal && t.kcal > g.kcal ? 'var(--danger)' : 'var(--accent)';
-    $('kcalEaten').textContent = fmt(t.kcal);
+    const C = 2 * Math.PI * 63;
+    $('ringFg').style.strokeDashoffset = C * (1 - (g.kcal ? Math.min(t.kcal / g.kcal, 1) : 0));
     const left = g.kcal - t.kcal;
-    $('kcalLeft').innerHTML = left >= 0 ? fmt(left) + ' kcal left' : '<span class="over">' + fmt(-left) + ' kcal over</span>';
-    $('macroBars').innerHTML = MACROS.map(m => {
-      const v = t[m.key], goal = g[m.key];
-      const w = goal ? Math.min(v / goal * 100, 100) : 0;
-      return '<div class="macro"><div class="row"><span><span class="dot" style="background:' + m.color + '"></span>' + m.label +
-        '</span><span class="num ' + (goal && v > goal ? 'over' : 'muted') + '">' + fmt(v) + ' / ' + fmt(goal) + ' g · ' +
-        fmt(Math.max(goal - v, 0)) + ' g left</span></div>' +
-        '<div class="bar"><span style="width:' + w + '%;background:' + m.color + '"></span></div></div>';
+    $('kcalLeftBig').textContent = fmt(Math.abs(left));
+    $('kcalLeftLbl').innerHTML = left >= 0 ? 'kcal left' : '<span class="over">kcal over</span>';
+    $('kcalEaten').innerHTML = fmt(t.kcal) + ' <small>kcal</small>';
+    $('kcalGoal').innerHTML = fmt(g.kcal) + ' <small>kcal</small>';
+
+    $('tiles').innerHTML = MACROS.map(m => {
+      const v = t[m.key], goal = g[m.key], over = goal && v > goal;
+      const pct = goal ? v / goal : 0;
+      return '<div class="tile"><div class="mini">' + ring(19, 5, pct, over ? 'var(--danger)' : m.color, 'var(--surface-2)') +
+        '<span class="num">' + Math.round(pct * 100) + '%</span></div>' +
+        '<div class="name">' + m.label + '</div>' +
+        '<div class="amt num">' + fmt(v) + '<small> / ' + fmt(goal) + ' g</small></div>' +
+        '<div class="left num' + (over ? ' over' : '') + '">' + (over ? fmt(v - goal) + ' g over' : fmt(goal - v) + ' g left') + '</div></div>';
     }).join('');
 
-    // Calorie split from macros: what you ate today vs your target %.
     const macroKcal = MACROS.map(m => t[m.key] * KCAL_PER_G[m.key]);
-    const totalMacroKcal = macroKcal.reduce((a, b) => a + b, 0);
-    const actual = MACROS.map((m, i) => totalMacroKcal ? macroKcal[i] / totalMacroKcal * 100 : 0);
+    const total = macroKcal.reduce((a, b) => a + b, 0);
+    const actual = MACROS.map((m, i) => total ? macroKcal[i] / total * 100 : 0);
     const stack = vals => '<div class="stack">' + MACROS.map((m, i) =>
       '<span style="width:' + vals[i] + '%;background:' + m.color + '"></span>').join('') + '</div>';
     $('splitView').innerHTML =
-      '<div class="split-title">Calorie split</div>' +
       '<div class="split-row"><span>Today</span>' + stack(actual) + '</div>' +
       '<div class="split-row"><span>Target</span>' + stack(MACROS.map(m => g.pct[m.key])) + '</div>' +
-      '<div class="split-legend num">' + MACROS.map((m, i) =>
+      '<div class="legend num">' + MACROS.map((m, i) =>
         '<span><span class="dot" style="background:' + m.color + '"></span>' + m.label + ' <b>' +
-        (totalMacroKcal ? Math.round(actual[i]) + '%' : '–') + '</b> / ' + g.pct[m.key] + '%</span>').join('') + '</div>';
+        (total ? Math.round(actual[i]) + '%' : '–') + '</b> / ' + fmt1(g.pct[m.key]) + '%</span>').join('') + '</div>';
   }
 
   function renderMeals() {
     const d = days[currentDate] || emptyDay();
     $('meals').innerHTML = MEALS.map(m => {
       const foods = d[m.id] || [];
-      const list = foods.length ? foods.map((f, i) =>
-        '<div class="food"><div><div class="name">' + esc(f.name) + '</div>' +
-        '<div class="sub num">P ' + fmt(f.protein) + ' g · C ' + fmt(f.carbs) + ' g · F ' + fmt(f.fat) + ' g</div></div>' +
+      const items = foods.length ? foods.map((f, i) =>
+        '<div class="item"><div><div class="name">' + esc(f.name) + '</div>' +
+        '<div class="m num">C ' + fmt1(f.carbs) + ' g · P ' + fmt1(f.protein) + ' g · F ' + fmt1(f.fat) + ' g</div></div>' +
         '<div class="kc num">' + fmt(f.kcal) + ' kcal</div>' +
-        '<button class="ghost" data-del="' + m.id + ':' + i + '" aria-label="Remove ' + esc(f.name) + '">✕</button></div>'
-      ).join('') : '<div class="empty">Nothing logged yet. Tap “Add food” to log your first item.</div>';
-      const form = openMeal === m.id
-        ? '<form class="add-form" data-meal="' + m.id + '">' +
-            '<div class="full"><label for="f-' + m.id + '-name">Food</label><input id="f-' + m.id + '-name" name="name" required placeholder="e.g. Greek yogurt with honey" autocomplete="off"></div>' +
-            '<div><label for="f-' + m.id + '-p">Protein g</label><input id="f-' + m.id + '-p" name="protein" type="number" inputmode="decimal" step="0.1" min="0" placeholder="0"></div>' +
-            '<div><label for="f-' + m.id + '-c">Carbs g</label><input id="f-' + m.id + '-c" name="carbs" type="number" inputmode="decimal" step="0.1" min="0" placeholder="0"></div>' +
-            '<div><label for="f-' + m.id + '-f">Fat g</label><input id="f-' + m.id + '-f" name="fat" type="number" inputmode="decimal" step="0.1" min="0" placeholder="0"></div>' +
-            '<div><label for="f-' + m.id + '-k">kcal</label><input id="f-' + m.id + '-k" name="kcal" type="number" inputmode="numeric" step="1" min="0" placeholder="auto"></div>' +
-            '<div class="actions"><button type="button" data-cancel>Cancel</button><button class="primary" type="submit">Add to ' + m.label.toLowerCase() + '</button></div>' +
-          '</form>'
-        : '<button class="add-btn" data-open="' + m.id + '">+ Add food</button>';
-      return '<section class="card"><div class="meal-head"><h2>' + m.label + '<span class="when">' + m.when + '</span></h2>' +
-        '<span class="muted num" style="font-size:13px">' + fmt(sum(foods).kcal) + ' kcal</span></div>' + list + form + '</section>';
+        '<button class="del" data-del="' + m.id + ':' + i + '" aria-label="Remove ' + esc(f.name) + '">' +
+        '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>'
+      ).join('') : '<div class="empty">Nothing logged yet</div>';
+      return '<section class="card meal"><div class="meal-head">' +
+        '<div class="meal-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">' + ICONS[m.id] + '</svg></div>' +
+        '<div class="t"><h3>' + m.label + '</h3><div class="sub num">' + fmt(sum(foods).kcal) + ' kcal' + (foods.length ? ' · ' + foods.length + (foods.length === 1 ? ' item' : ' items') : '') + '</div></div>' +
+        '<button class="add-sm" data-add="' + m.id + '" aria-label="Add food to ' + m.label + '">+</button></div>' +
+        '<div class="items">' + items + '</div></section>';
     }).join('');
   }
 
   function renderWeight() {
     const all = Object.keys(settings.weights).sort().map(k => ({ k, v: settings.weights[k] }));
     const w = settings.weights[currentDate];
-    if (document.activeElement !== $('weightInput')) $('weightInput').value = w != null ? w : '';
-    $('wToday').textContent = w != null ? w + ' kg' : '–';
-    $('wCount').textContent = all.length;
+    if (document.activeElement !== $('weightInput')) $('weightInput').value = w != null ? fmt1(w) : '';
+    $('wToday').innerHTML = (w != null ? fmt1(w) : '–') + ' <small>kg</small>';
+    $('wCount').textContent = all.length + (all.length === 1 ? ' entry' : ' entries');
     const from = shiftDay(currentDate, -29);
     const recent = all.filter(e => e.k >= from && e.k <= currentDate);
-    const svg = $('weightChart');
+    const svg = $('weightChart'), chip = $('wChange');
+    chip.className = 'delta num';
     if (recent.length < 2) {
-      $('wChange').textContent = '–';
-      svg.innerHTML = '<text x="150" y="52" text-anchor="middle" fill="var(--muted)" font-size="12">Log 2 or more days to see your trend</text>';
+      chip.textContent = 'Log 2 days to see your trend';
+      svg.innerHTML = '';
       return;
     }
     const diff = recent[recent.length - 1].v - recent[0].v;
-    $('wChange').textContent = (diff > 0 ? '+' : '') + diff.toFixed(1) + ' kg';
+    chip.textContent = (diff > 0 ? '▲ ' : diff < 0 ? '▼ ' : '') + fmt1(Math.abs(diff)) + ' kg in 30 days';
+    if (diff < 0) chip.classList.add('down');
     const vals = recent.map(e => e.v);
     const min = Math.min(...vals), max = Math.max(...vals), span = (max - min) || 1;
     const t0 = fromKey(recent[0].k).getTime(), t1 = fromKey(recent[recent.length - 1].k).getTime();
-    const pts = recent.map(e => [6 + (fromKey(e.k).getTime() - t0) / ((t1 - t0) || 1) * 288, 86 - (e.v - min) / span * 74]);
+    const pts = recent.map(e => [6 + (fromKey(e.k).getTime() - t0) / ((t1 - t0) || 1) * 288, 74 - (e.v - min) / span * 62]);
     const line = pts.map(p => p[0].toFixed(1) + ',' + p[1].toFixed(1)).join(' ');
     const last = pts[pts.length - 1];
     svg.innerHTML =
-      '<polygon points="' + pts[0][0] + ',96 ' + line + ' ' + last[0] + ',96" fill="var(--accent)" opacity=".12"/>' +
-      '<polyline points="' + line + '" fill="none" stroke="var(--accent)" stroke-width="2" vector-effect="non-scaling-stroke"/>';
+      '<defs><linearGradient id="wg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color:var(--accent);stop-opacity:.25"/>' +
+      '<stop offset="1" style="stop-color:var(--accent);stop-opacity:0"/></linearGradient></defs>' +
+      '<polygon points="' + pts[0][0] + ',84 ' + line + ' ' + last[0] + ',84" fill="url(#wg)"/>' +
+      '<polyline points="' + line + '" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linejoin="round" vector-effect="non-scaling-stroke"/>';
   }
 
-  function render() { renderHeader(); renderSummary(); renderMeals(); renderWeight(); }
+  function renderDay() { renderHeader(); renderSummary(); renderMeals(); }
+  function render() { renderDay(); renderWeight(); }
 
   // ---------- Events ----------
-  function goTo(k) { currentDate = k; openMeal = null; render(); subscribeDay(k); }
-  $('prevDay').onclick = () => goTo(shiftDay(currentDate, -1));
-  $('nextDay').onclick = () => goTo(shiftDay(currentDate, 1));
+  function goTo(k) { currentDate = k; render(); subscribeDay(k); }
+  $('week').addEventListener('click', e => { const b = e.target.closest('[data-day]'); if (b) goTo(b.dataset.day); });
+  $('prevWeek').onclick = () => goTo(shiftDay(currentDate, -7));
+  $('nextWeek').onclick = () => goTo(shiftDay(currentDate, 7));
   $('todayBtn').onclick = () => goTo(toKey(new Date()));
-  $('datePicker').onchange = e => { if (e.target.value) goTo(e.target.value); };
+
+  // Close a sheet with its Cancel button or a tap on the backdrop.
+  document.querySelectorAll('dialog.sheet').forEach(dlg => {
+    dlg.addEventListener('click', e => { if (e.target === dlg || e.target.closest('[data-close]')) dlg.close(); });
+  });
+
+  // Add food sheet
+  const foodSheet = $('foodSheet');
+  function renderSeg() {
+    $('mealSeg').innerHTML = MEALS.map(m =>
+      '<button type="button" data-meal="' + m.id + '" aria-pressed="' + (m.id === sheetMeal) + '">' + m.label + '</button>').join('');
+    $('foodSubmit').textContent = 'Add to ' + MEALS.find(m => m.id === sheetMeal).label.toLowerCase();
+  }
+  function updateEstimate() {
+    const c = num($('fCarbs').value), p = num($('fProtein').value), f = num($('fFat').value);
+    const est = c * 4 + p * 4 + f * 9;
+    $('estimate').innerHTML = String($('fKcal').value).trim() !== ''
+      ? 'Using your kcal: <b>' + fmt(num($('fKcal').value)) + ' kcal</b>' + (est ? ' (macros say ' + fmt(est) + ')' : '')
+      : est ? 'Worked out from macros: <b>' + fmt(est) + ' kcal</b>' : 'Fill in the macros and kcal is worked out for you.';
+  }
+  function openFood(meal) {
+    sheetMeal = meal || defaultMeal();
+    $('foodForm').reset();
+    renderSeg(); updateEstimate();
+    foodSheet.showModal();
+    setTimeout(() => $('fName').focus(), 50);
+  }
+  function defaultMeal() {
+    const h = new Date().getHours();
+    return h < 11 ? 'breakfast' : h < 15 ? 'lunch' : h < 18 ? 'snack' : 'dinner';
+  }
+  $('fab').onclick = () => openFood();
+  $('mealSeg').addEventListener('click', e => { const b = e.target.closest('[data-meal]'); if (b) { sheetMeal = b.dataset.meal; renderSeg(); } });
+  $('foodForm').addEventListener('input', updateEstimate);
+  $('foodForm').addEventListener('submit', e => {
+    e.preventDefault();
+    const name = $('fName').value.trim();
+    if (!name) { $('fName').focus(); return; }
+    const carbs = num($('fCarbs').value), protein = num($('fProtein').value), fat = num($('fFat').value);
+    const kcalIn = String($('fKcal').value).trim();
+    const kcal = kcalIn !== '' ? num(kcalIn) : protein * 4 + carbs * 4 + fat * 9;
+    day(currentDate)[sheetMeal].push({ name, kcal, protein, carbs, fat });
+    foodSheet.close();
+    saveDay(currentDate); renderDay();
+  });
 
   $('meals').addEventListener('click', e => {
-    const open = e.target.closest('[data-open]');
-    if (open) { openMeal = open.dataset.open; renderMeals(); $('f-' + openMeal + '-name').focus(); return; }
-    if (e.target.closest('[data-cancel]')) { openMeal = null; renderMeals(); return; }
+    const add = e.target.closest('[data-add]');
+    if (add) { openFood(add.dataset.add); return; }
     const del = e.target.closest('[data-del]');
     if (del) {
       const [meal, i] = del.dataset.del.split(':');
       day(currentDate)[meal].splice(Number(i), 1);
-      saveDay(currentDate); renderSummary(); renderMeals();
+      saveDay(currentDate); renderDay();
     }
-  });
-
-  $('meals').addEventListener('submit', e => {
-    e.preventDefault();
-    const f = e.target, data = new FormData(f);
-    const protein = num(data.get('protein')), carbs = num(data.get('carbs')), fat = num(data.get('fat'));
-    const kcalIn = String(data.get('kcal') || '').trim();
-    const kcal = kcalIn !== '' ? num(kcalIn) : protein * 4 + carbs * 4 + fat * 9;
-    day(currentDate)[f.dataset.meal].push({ name: String(data.get('name')).trim(), kcal, protein, carbs, fat });
-    openMeal = null;
-    saveDay(currentDate); renderSummary(); renderMeals();
   });
 
   $('weightForm').addEventListener('submit', e => {
     e.preventDefault();
-    const v = parseFloat($('weightInput').value);
+    const v = parse($('weightInput').value);
     if (isFinite(v) && v > 0) settings.weights[currentDate] = Math.round(v * 10) / 10;
     else delete settings.weights[currentDate];
     $('weightInput').blur();
     saveSettings(); renderWeight();
   });
 
-  const dlg = $('goalsDialog');
+  // Daily targets sheet
+  const goalsSheet = $('goalsSheet');
   const cap = k => k[0].toUpperCase() + k.slice(1);
   const pctIn = k => $('g' + cap(k) + 'Pct'), gIn = k => $('g' + cap(k) + 'G');
   const gramsFor = (k, pct, kcal) => Math.round(kcal * pct / 100 / KCAL_PER_G[k]);
-
   function checkSplit() {
     const pctSum = MACROS.reduce((s, m) => s + num(pctIn(m.key).value), 0);
     const kcalFromG = MACROS.reduce((s, m) => s + num(gIn(m.key).value) * KCAL_PER_G[m.key], 0);
-    const el = $('splitCheck');
-    el.classList.toggle('warn', Math.round(pctSum) !== 100);
-    el.textContent = 'Split adds up to ' + Math.round(pctSum) + '%' + (Math.round(pctSum) !== 100 ? ' (should be 100%)' : '') +
-      ' · grams give ' + fmt(kcalFromG) + ' kcal';
+    const bad = Math.round(pctSum) !== 100;
+    $('splitCheck').classList.toggle('warn', bad);
+    $('splitCheck').textContent = 'Split adds up to ' + fmt1(pctSum) + '%' + (bad ? ' (should be 100%)' : '') + ' · grams give ' + fmt(kcalFromG) + ' kcal';
   }
-
   $('goalsBtn').onclick = () => {
     const g = settings.goals;
-    $('gKcal').value = g.kcal;
-    MACROS.forEach(m => { pctIn(m.key).value = g.pct[m.key]; gIn(m.key).value = g[m.key]; });
+    $('gKcal').value = fmt1(g.kcal);
+    MACROS.forEach(m => { pctIn(m.key).value = fmt1(g.pct[m.key]); gIn(m.key).value = fmt1(g[m.key]); });
     checkSplit();
-    dlg.showModal();
+    goalsSheet.showModal();
   };
   $('goalsForm').addEventListener('input', e => {
     const kcal = num($('gKcal').value);
@@ -510,11 +703,12 @@
     else if (gk && kcal) pctIn(gk).value = Math.round(num(e.target.value) * KCAL_PER_G[gk] / kcal * 100);
     checkSplit();
   });
-  dlg.addEventListener('close', () => {
-    if (dlg.returnValue !== 'save') return;
+  $('goalsForm').addEventListener('submit', e => {
+    e.preventDefault();
     const g = { kcal: num($('gKcal').value), pct: {} };
     MACROS.forEach(m => { g[m.key] = num(gIn(m.key).value); g.pct[m.key] = num(pctIn(m.key).value); });
     settings.goals = g;
+    goalsSheet.close();
     saveSettings(); renderSummary();
   });
 
