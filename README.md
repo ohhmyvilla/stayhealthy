@@ -4,6 +4,7 @@ A simple nutrition tracker that runs in your browser. No install, no server.
 
 ## Features
 
+- **Pip the fox** walks along your daily calorie path, sleeps until you log, cheers when you hit your goal
 - Log foods for **Breakfast, Lunch, Dinner and Snack**
 - Week view: tap a day to see or log it
 - Daily targets: calories plus a % split for carbs, protein and fat (grams are calculated for you)

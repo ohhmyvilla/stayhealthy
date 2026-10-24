@@ -6,291 +6,361 @@
 <title>Stay Healthy</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@500;600;700;800&display=swap">
 <style>
-  /* Layout: app-style single column (max 560px) — sticky header with week strip, green hero ring,
-     macro tiles, meal lists, weight card; a floating "Add food" button opens a bottom sheet. */
+  /* Layout: playful single column (max 560px) on a sunrise gradient. Summary card with Pip the fox walking a
+     path toward today's calorie goal, then macro bars, colorful meal rows, split, and weight. Bottom sheets for input. */
   :root {
-    --bg: #eef2ee;
+    --bg: #f6f3fb;
     --surface: #ffffff;
-    --surface-2: #f5f8f5;
-    --fg: #14201a;
-    --muted: #6b7a72;
-    --line: #e2e8e3;
-    --accent: #0e7a5a;
-    --accent-soft: #dcefe6;
+    --surface-2: #f4f1f9;
+    --fg: #231a33;
+    --muted: #7d7490;
+    --line: #ece7f3;
+    --accent: #ff6a3d;
+    --accent-2: #ff3d7f;
     --accent-ink: #ffffff;
-    --hero-a: #0b5d45;
-    --hero-b: #13906a;
-    --hero-fg: #ffffff;
-    --hero-muted: rgba(255, 255, 255, .72);
-    --hero-track: rgba(255, 255, 255, .18);
-    --hero-glow: #b9f5a8;
-    --carbs: #e9a21c;
-    --protein: #e5603f;
-    --fat: #3a7fe0;
-    --danger: #d23b2f;
-    --good: #0e7a5a;
-    --shadow: 0 1px 2px rgba(20, 32, 26, .04), 0 8px 24px rgba(20, 32, 26, .07);
-    --font-display: "Bricolage Grotesque", "Avenir Next", system-ui, sans-serif;
-    --font-body: "Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --sky-a: #ffe1c9;
+    --sky-b: #ffd3e4;
+    --sky-c: #dcd5ff;
+    --path: #f1ebfa;
+    --carbs: #ffb31a;
+    --protein: #ff4f8b;
+    --fat: #4c7dff;
+    --m-breakfast: #ffa51f;
+    --m-lunch: #1fc27e;
+    --m-dinner: #7b5cff;
+    --m-snack: #ff4f8b;
+    --good: #1fc27e;
+    --danger: #ef3e4a;
+    --fox: #ff7a2f;
+    --fox-dark: #d9561a;
+    --fox-cream: #fff4e8;
+    --fox-ink: #2b1d16;
+    --shadow: 0 2px 4px rgba(60, 30, 90, .04), 0 12px 30px rgba(60, 30, 90, .08);
+    --font-display: "Fredoka", "Avenir Next Rounded", "Nunito", system-ui, sans-serif;
+    --font-body: "Nunito", system-ui, -apple-system, "Segoe UI", sans-serif;
   }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
-      --bg: #0c120f; --surface: #151d18; --surface-2: #1b251f; --fg: #e9efea; --muted: #93a39a; --line: #243029;
-      --accent: #3fcf9c; --accent-soft: #173a2d; --accent-ink: #052016;
-      --hero-a: #0f3d2f; --hero-b: #155f48; --hero-fg: #f2fff8; --hero-muted: rgba(242, 255, 248, .7);
-      --hero-track: rgba(255, 255, 255, .12); --hero-glow: #a6f08f;
-      --carbs: #f2b443; --protein: #f27d5e; --fat: #6ea5f2; --danger: #f2685c; --good: #3fcf9c;
-      --shadow: 0 1px 2px rgba(0, 0, 0, .4);
+      --bg: #14111c; --surface: #1f1a2b; --surface-2: #2a2338; --fg: #f3eefb; --muted: #a59bb8; --line: #2f2840;
+      --accent: #ff8257; --accent-2: #ff5c95; --accent-ink: #ffffff;
+      --sky-a: #3b2430; --sky-b: #35213a; --sky-c: #262148; --path: #2a2338;
+      --carbs: #ffc247; --protein: #ff6f9f; --fat: #7096ff;
+      --m-breakfast: #ffb547; --m-lunch: #3fd496; --m-dinner: #9a83ff; --m-snack: #ff6f9f;
+      --good: #3fd496; --danger: #ff6670;
+      --shadow: 0 2px 6px rgba(0, 0, 0, .35);
       color-scheme: dark;
     }
   }
   :root[data-theme="dark"] {
-    --bg: #0c120f; --surface: #151d18; --surface-2: #1b251f; --fg: #e9efea; --muted: #93a39a; --line: #243029;
-    --accent: #3fcf9c; --accent-soft: #173a2d; --accent-ink: #052016;
-    --hero-a: #0f3d2f; --hero-b: #155f48; --hero-fg: #f2fff8; --hero-muted: rgba(242, 255, 248, .7);
-    --hero-track: rgba(255, 255, 255, .12); --hero-glow: #a6f08f;
-    --carbs: #f2b443; --protein: #f27d5e; --fat: #6ea5f2; --danger: #f2685c; --good: #3fcf9c;
-    --shadow: 0 1px 2px rgba(0, 0, 0, .4);
+    --bg: #14111c; --surface: #1f1a2b; --surface-2: #2a2338; --fg: #f3eefb; --muted: #a59bb8; --line: #2f2840;
+    --accent: #ff8257; --accent-2: #ff5c95; --accent-ink: #ffffff;
+    --sky-a: #3b2430; --sky-b: #35213a; --sky-c: #262148; --path: #2a2338;
+    --carbs: #ffc247; --protein: #ff6f9f; --fat: #7096ff;
+    --m-breakfast: #ffb547; --m-lunch: #3fd496; --m-dinner: #9a83ff; --m-snack: #ff6f9f;
+    --good: #3fd496; --danger: #ff6670;
+    --shadow: 0 2px 6px rgba(0, 0, 0, .35);
     color-scheme: dark;
   }
 
   * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-  body { background: var(--bg); color: var(--fg); font: 15px/1.45 var(--font-body); }
-  .app { max-width: 560px; margin: 0 auto; padding: 0 16px 120px; display: grid; gap: 14px; }
-  h1, h2, h3 { font-family: var(--font-display); margin: 0; letter-spacing: -.02em; text-wrap: balance; }
+  body { background: var(--bg); color: var(--fg); font: 15px/1.45 var(--font-body); font-weight: 600; }
+  .sunrise { position: absolute; inset: 0 0 auto 0; height: 340px; z-index: 0; pointer-events: none;
+    background: linear-gradient(160deg, var(--sky-a) 0%, var(--sky-b) 48%, var(--sky-c) 100%);
+    -webkit-mask-image: linear-gradient(to bottom, #000 55%, transparent); mask-image: linear-gradient(to bottom, #000 55%, transparent); }
+  .app { position: relative; z-index: 1; max-width: 560px; margin: 0 auto; padding: 18px 16px 120px; display: grid; gap: 14px; }
+  h1, h2, h3 { font-family: var(--font-display); margin: 0; font-weight: 600; letter-spacing: -.01em; text-wrap: balance; }
   .num { font-variant-numeric: tabular-nums; }
-  .muted { color: var(--muted); }
+  .muted, .sub { color: var(--muted); }
+  .sub { font-size: 12px; font-weight: 600; }
   button, input { font: inherit; color: inherit; }
-  button { cursor: pointer; border: 0; background: none; transition: transform .12s ease, background .2s, opacity .2s; }
-  button:active { transform: scale(.96); }
-  button:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  button { cursor: pointer; border: 0; background: none; transition: transform .15s cubic-bezier(.3, 1.6, .5, 1), background .2s, opacity .2s; }
+  button:active { transform: scale(.92); }
+  button:focus-visible, input:focus-visible { outline: 3px solid color-mix(in srgb, var(--accent) 55%, transparent); outline-offset: 2px; }
 
-  /* Header + week strip */
-  .top {
-    position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5;
-    margin: 0 -16px; padding: 14px 16px 10px;
-    background: color-mix(in srgb, var(--bg) 86%, transparent);
-    backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
-  }
+  /* Header */
   .bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
-  .brand h1 { font-size: 24px; font-weight: 800; }
+  .hello { font-size: 13px; color: var(--muted); font-weight: 700; }
+  .brand h1 { font-size: 28px; font-weight: 700; }
   .sync { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted); }
   .sync::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--muted); }
-  .sync[data-state="ok"]::before { background: var(--good); box-shadow: 0 0 0 3px var(--accent-soft); }
+  .sync[data-state="ok"]::before { background: var(--good); }
   .sync[data-state="err"] { color: var(--danger); }
   .sync[data-state="err"]::before { background: var(--danger); }
-  .icon-btn {
-    width: 42px; height: 42px; border-radius: 14px; display: grid; place-items: center;
-    background: var(--surface); box-shadow: var(--shadow); color: var(--fg);
-  }
-  .icon-btn svg { width: 20px; height: 20px; }
-  .month { display: flex; align-items: center; justify-content: space-between; margin-top: 14px; }
-  .month b { font-family: var(--font-display); font-size: 15px; }
-  .month .nav { display: flex; gap: 4px; align-items: center; }
-  .chip { font-size: 12px; font-weight: 600; padding: 6px 12px; border-radius: 99px; background: var(--accent-soft); color: var(--accent); }
-  .arrow { width: 32px; height: 32px; border-radius: 10px; display: grid; place-items: center; color: var(--muted); }
-  .arrow:hover { background: var(--surface); color: var(--fg); }
-  .week { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; margin-top: 8px; }
-  .wd {
-    display: grid; gap: 2px; justify-items: center; padding: 8px 0 9px; border-radius: 16px;
-    background: var(--surface); color: var(--muted); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .04em;
-  }
-  .wd b { font-family: var(--font-display); font-size: 17px; color: var(--fg); letter-spacing: -.01em; }
-  .wd .tick { width: 4px; height: 4px; border-radius: 50%; background: transparent; }
-  .wd.has .tick { background: var(--accent); }
-  .wd.today b { color: var(--accent); }
-  .wd.sel { background: var(--accent); color: var(--accent-ink); box-shadow: 0 6px 16px color-mix(in srgb, var(--accent) 35%, transparent); }
-  .wd.sel b { color: var(--accent-ink); }
-  .wd.sel .tick { background: var(--accent-ink); }
+  .icon-btn { width: 46px; height: 46px; border-radius: 16px; display: grid; place-items: center; background: var(--surface); box-shadow: var(--shadow); color: var(--accent); }
+  .icon-btn svg { width: 22px; height: 22px; }
 
-  /* Hero */
-  .hero {
-    border-radius: 28px; padding: 22px; color: var(--hero-fg);
-    background: radial-gradient(120% 90% at 100% 0%, var(--hero-b) 0%, var(--hero-a) 62%);
-    display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 20px; align-items: center;
-    box-shadow: 0 14px 34px color-mix(in srgb, var(--hero-a) 38%, transparent);
+  /* Week strip */
+  .month { display: flex; align-items: center; justify-content: space-between; }
+  .month b { font-family: var(--font-display); font-size: 16px; font-weight: 600; }
+  .month .nav { display: flex; gap: 4px; align-items: center; }
+  .chip { font-size: 12px; font-weight: 800; padding: 6px 12px; border-radius: 99px; background: var(--surface); color: var(--accent); box-shadow: var(--shadow); }
+  .arrow { width: 34px; height: 34px; border-radius: 12px; display: grid; place-items: center; color: var(--fg); background: color-mix(in srgb, var(--surface) 60%, transparent); }
+  .week { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; margin-top: 8px; }
+  .wd { display: grid; gap: 2px; justify-items: center; padding: 8px 0 9px; border-radius: 18px; background: color-mix(in srgb, var(--surface) 75%, transparent);
+    color: var(--muted); font-size: 11px; font-weight: 800; text-transform: uppercase; }
+  .wd b { font-family: var(--font-display); font-size: 18px; font-weight: 600; color: var(--fg); }
+  .wd .tick { width: 5px; height: 5px; border-radius: 50%; background: transparent; }
+  .wd.has .tick { background: var(--good); }
+  .wd.today b { color: var(--accent); }
+  .wd.sel { background: linear-gradient(150deg, var(--accent), var(--accent-2)); color: rgba(255, 255, 255, .85);
+    box-shadow: 0 8px 18px color-mix(in srgb, var(--accent-2) 35%, transparent); }
+  .wd.sel b { color: #fff; }
+  .wd.sel .tick { background: #fff; }
+
+  /* Cards */
+  .card { background: var(--surface); border-radius: 28px; padding: 18px; box-shadow: var(--shadow); min-width: 0; }
+  .card-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+  .card-head h2 { font-size: 19px; }
+
+  /* Pip's path */
+  .trail { position: relative; padding-top: 74px; margin: 4px 0 6px; }
+  .bubble {
+    position: absolute; top: 0; left: 0; max-width: 78%; z-index: 2;
+    background: var(--fg); color: var(--bg); font-size: 13px; font-weight: 700; line-height: 1.3;
+    padding: 9px 13px; border-radius: 16px; transform: var(--bx, none); transition: left .9s cubic-bezier(.4, 0, .2, 1), transform .9s cubic-bezier(.4, 0, .2, 1);
   }
-  .ring { position: relative; width: 150px; height: 150px; }
+  .bubble::after { content: ""; position: absolute; bottom: -6px; left: var(--tail, 20px); width: 12px; height: 12px; background: inherit; border-radius: 2px; transform: translateX(-50%) rotate(45deg); }
+  .bubble.pop { animation: pop .45s cubic-bezier(.3, 1.6, .5, 1); }
+  .path { position: relative; height: 14px; border-radius: 99px; background: var(--path); margin: 54px 6px 0; }
+  .path-fill { position: absolute; inset: 0 auto 0 0; width: 0; border-radius: 99px;
+    background: linear-gradient(90deg, var(--m-lunch), var(--carbs), var(--accent), var(--accent-2)); background-size: 360px 100%;
+    transition: width .9s cubic-bezier(.4, 0, .2, 1); }
+  .path-fill.over { background: var(--danger); }
+  .flag { position: absolute; right: -4px; bottom: 6px; width: 22px; height: 30px; }
+  .fox-wrap { position: absolute; bottom: 4px; left: 0; width: 70px; height: 70px; transform: translateX(-50%); transition: left .9s cubic-bezier(.4, 0, .2, 1); z-index: 1; }
+  .fox { width: 70px; height: 70px; display: block; overflow: visible; animation: bob 2.6s ease-in-out infinite; transform-origin: 50% 100%; }
+  .fox .mood { display: none; }
+  .fox[data-mood="sleepy"] .m-sleepy, .fox[data-mood="happy"] .m-happy, .fox[data-mood="cheer"] .m-cheer, .fox[data-mood="worried"] .m-worried { display: inline; }
+  .fox .eyes-open { animation: blink 4.2s infinite; transform-origin: 32px 24px; }
+  .fox .tail { transform-origin: 44px 47px; animation: wag 1.6s ease-in-out infinite; }
+  .fox[data-mood="sleepy"] .tail { animation: none; }
+  .fox[data-mood="sleepy"] { animation: breathe 3.4s ease-in-out infinite; }
+  .fox[data-mood="cheer"] .tail { animation-duration: .5s; }
+  .fox-wrap.walking .fox { animation: walk .3s ease-in-out infinite; }
+  .fox-wrap.walking .leg-a { animation: step .3s ease-in-out infinite; }
+  .fox-wrap.walking .leg-b { animation: step .3s ease-in-out infinite reverse; }
+  .fox-wrap.jump .fox { animation: jump .7s cubic-bezier(.3, 1.4, .5, 1); }
+  .leg-a, .leg-b { transform-origin: 50% 0; transform-box: fill-box; }
+  .zzz { font: 700 12px var(--font-display); fill: var(--muted); animation: float 2.4s ease-in-out infinite; }
+  .zzz.z2 { animation-delay: 1.2s; font-size: 9px; }
+  .spark { animation: twinkle 1.2s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+  .spark.s2 { animation-delay: .4s; } .spark.s3 { animation-delay: .8s; }
+  .trail-labels { display: flex; justify-content: space-between; font-size: 11px; color: var(--muted); font-weight: 800; margin: 8px 6px 0; text-transform: uppercase; letter-spacing: .05em; }
+  @keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+  @keyframes breathe { 0%, 100% { transform: scale(1, 1); } 50% { transform: scale(1.03, .97); } }
+  @keyframes blink { 0%, 92%, 100% { transform: scaleY(1); } 95% { transform: scaleY(.1); } }
+  @keyframes wag { 0%, 100% { transform: rotate(0); } 50% { transform: rotate(14deg); } }
+  @keyframes walk { 0%, 100% { transform: translateY(0) rotate(-2deg); } 50% { transform: translateY(-4px) rotate(2deg); } }
+  @keyframes step { 0%, 100% { transform: rotate(-22deg); } 50% { transform: rotate(22deg); } }
+  @keyframes jump { 0% { transform: translateY(0) scale(1); } 20% { transform: translateY(2px) scale(1.12, .86); } 55% { transform: translateY(-26px) scale(.94, 1.08); } 80% { transform: translateY(0) scale(1.06, .94); } 100% { transform: none; } }
+  @keyframes pop { 0% { transform: var(--bx) scale(.6); opacity: 0; } 100% { transform: var(--bx) scale(1); opacity: 1; } }
+  @keyframes float { 0% { opacity: 0; transform: translate(0, 4px); } 30% { opacity: 1; } 100% { opacity: 0; transform: translate(6px, -10px); } }
+  @keyframes twinkle { 0%, 100% { transform: scale(.4); opacity: .3; } 50% { transform: scale(1); opacity: 1; } }
+
+  /* Summary numbers */
+  .summary { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 8px; margin-top: 14px; text-align: center; }
+  .summary .lbl { font-size: 12px; color: var(--muted); font-weight: 700; }
+  .summary .val { font-family: var(--font-display); font-size: 24px; font-weight: 600; }
+  .ring { position: relative; width: 140px; height: 140px; }
   .ring svg { display: block; transform: rotate(-90deg); }
   .ring .center { position: absolute; inset: 0; display: grid; place-content: center; text-align: center; }
-  .ring .big { font-family: var(--font-display); font-size: 36px; font-weight: 800; line-height: 1; letter-spacing: -.03em; }
-  .ring .small { font-size: 12px; color: var(--hero-muted); margin-top: 4px; }
-  .hero-side { display: grid; gap: 12px; min-width: 0; }
-  .hero-side .lbl { font-size: 11px; text-transform: uppercase; letter-spacing: .08em; color: var(--hero-muted); }
-  .hero-side .val { font-family: var(--font-display); font-size: 22px; font-weight: 700; letter-spacing: -.02em; }
-  .hero-side .val small { font-family: var(--font-body); font-size: 13px; font-weight: 500; color: var(--hero-muted); letter-spacing: 0; }
-  .hero-side .over { color: #ffd0c8; }
-  @media (max-width: 380px) { .hero { grid-template-columns: 1fr; justify-items: center; text-align: center; } }
-
-  /* Macro tiles */
-  .tiles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
-  .tile { background: var(--surface); border-radius: 22px; padding: 14px 12px; box-shadow: var(--shadow); display: grid; gap: 8px; justify-items: start; min-width: 0; }
-  .mini { width: 46px; height: 46px; position: relative; }
-  .mini svg { transform: rotate(-90deg); display: block; }
-  .mini span { position: absolute; inset: 0; display: grid; place-items: center; font-size: 11px; font-weight: 700; }
-  .tile .name { font-size: 12px; color: var(--muted); font-weight: 600; }
-  .tile .amt { font-family: var(--font-display); font-size: 18px; font-weight: 700; letter-spacing: -.02em; line-height: 1.1; }
-  .tile .amt small { font-family: var(--font-body); font-size: 12px; color: var(--muted); font-weight: 500; letter-spacing: 0; }
-  .tile .left { font-size: 12px; color: var(--muted); }
-  .tile .left.over { color: var(--danger); font-weight: 600; }
-
-  /* Generic card */
-  .card { background: var(--surface); border-radius: 24px; padding: 18px; box-shadow: var(--shadow); min-width: 0; }
-  .card-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
-  .card-head h2 { font-size: 17px; }
-  .sub { font-size: 12px; color: var(--muted); }
-
-  /* Split */
-  .split { display: grid; gap: 10px; margin-top: 12px; }
-  .split-row { display: grid; grid-template-columns: 52px minmax(0, 1fr); gap: 10px; align-items: center; font-size: 12px; color: var(--muted); }
-  .stack { display: flex; height: 10px; border-radius: 99px; overflow: hidden; background: var(--surface-2); gap: 2px; }
-  .stack span { height: 100%; border-radius: 99px; transition: width .4s ease; }
-  .legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 12px; color: var(--muted); }
-  .legend b { color: var(--fg); }
-  .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; vertical-align: 1px; }
+  .ring .big { font-family: var(--font-display); font-size: 34px; font-weight: 700; line-height: 1; }
+  .ring .small { font-size: 12px; color: var(--muted); font-weight: 700; margin-top: 3px; }
+  .ring .small.over { color: var(--danger); }
+  .macros { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin-top: 16px; padding-top: 16px; border-top: 2px dashed var(--line); }
+  .macro { display: grid; gap: 6px; text-align: center; min-width: 0; }
+  .macro .name { font-size: 13px; font-weight: 800; }
+  .bar-track { height: 8px; border-radius: 99px; background: var(--surface-2); overflow: hidden; }
+  .bar-track span { display: block; height: 100%; border-radius: 99px; transition: width .6s cubic-bezier(.4, 0, .2, 1); }
+  .macro .amt { font-size: 12px; color: var(--muted); font-weight: 700; }
+  .macro .amt.over { color: var(--danger); }
 
   /* Meals */
-  .section-title { display: flex; justify-content: space-between; align-items: baseline; padding: 6px 4px 0; }
-  .section-title h2 { font-size: 19px; }
-  .meal { padding: 14px 14px 10px; }
+  .meal-row { display: grid; gap: 4px; padding: 12px 0; border-top: 2px solid var(--line); }
+  .meal-row:first-of-type { border-top: 0; padding-top: 6px; }
   .meal-head { display: flex; align-items: center; gap: 12px; }
-  .meal-icon { width: 40px; height: 40px; border-radius: 14px; display: grid; place-items: center; background: var(--accent-soft); color: var(--accent); flex: none; }
-  .meal-icon svg { width: 20px; height: 20px; }
-  .meal-head .t { flex: 1; min-width: 0; }
-  .meal-head h3 { font-size: 16px; }
-  .add-sm { width: 36px; height: 36px; border-radius: 12px; background: var(--surface-2); color: var(--accent); font-size: 22px; line-height: 1; display: grid; place-items: center; }
-  .items { margin-top: 6px; }
-  .item { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; gap: 8px; align-items: center; padding: 10px 2px; border-top: 1px solid var(--line); }
-  .item .name { font-weight: 600; overflow-wrap: anywhere; }
+  .meal-icon { width: 50px; height: 50px; border-radius: 18px; display: grid; place-items: center; flex: none;
+    background: color-mix(in srgb, var(--mc) 16%, var(--surface)); color: var(--mc); }
+  .meal-icon svg { width: 26px; height: 26px; }
+  .meal-head .t { flex: 1; min-width: 0; display: grid; gap: 4px; }
+  .meal-head h3 { font-size: 17px; }
+  .meal-head .bar-track { height: 6px; max-width: 180px; }
+  .add-round { width: 42px; height: 42px; border-radius: 50%; background: var(--mc); color: #fff; display: grid; place-items: center; flex: none;
+    box-shadow: 0 6px 14px color-mix(in srgb, var(--mc) 40%, transparent); }
+  .add-round svg { width: 20px; height: 20px; }
+  .item { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; gap: 8px; align-items: center; margin-left: 62px; padding: 8px 10px; border-radius: 14px; background: var(--surface-2); }
+  @media (max-width: 440px) { .item { margin-left: 0; } }
+  .item .name { font-weight: 700; overflow-wrap: anywhere; }
   .item .m { font-size: 12px; color: var(--muted); }
-  .item .kc { font-weight: 700; white-space: nowrap; }
-  .del { width: 30px; height: 30px; border-radius: 10px; color: var(--muted); display: grid; place-items: center; }
-  .del:hover { background: var(--surface-2); color: var(--danger); }
-  .empty { font-size: 13px; color: var(--muted); padding: 8px 2px 6px; }
+  .item .kc { font-weight: 800; white-space: nowrap; font-size: 14px; }
+  .del { width: 28px; height: 28px; border-radius: 10px; color: var(--muted); display: grid; place-items: center; }
+  .del:hover { color: var(--danger); }
+
+  /* Split + legend */
+  .split { display: grid; gap: 10px; margin-top: 12px; }
+  .split-row { display: grid; grid-template-columns: 54px minmax(0, 1fr); gap: 10px; align-items: center; font-size: 12px; color: var(--muted); font-weight: 700; }
+  .stack { display: flex; height: 12px; border-radius: 99px; overflow: hidden; background: var(--surface-2); gap: 3px; }
+  .stack span { height: 100%; border-radius: 99px; transition: width .5s ease; }
+  .legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 12px; color: var(--muted); }
+  .legend b { color: var(--fg); }
+  .dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 6px; vertical-align: 0; }
 
   /* Weight */
   .weight-top { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; margin-top: 10px; flex-wrap: wrap; }
-  .weight-big { font-family: var(--font-display); font-size: 40px; font-weight: 800; letter-spacing: -.03em; line-height: 1; }
-  .weight-big small { font-family: var(--font-body); font-size: 15px; font-weight: 500; color: var(--muted); letter-spacing: 0; }
-  .delta { font-size: 12px; font-weight: 600; padding: 6px 10px; border-radius: 99px; background: var(--surface-2); color: var(--muted); }
-  .delta.down { background: var(--accent-soft); color: var(--accent); }
+  .weight-big { font-family: var(--font-display); font-size: 42px; font-weight: 700; line-height: 1; }
+  .weight-big small { font-family: var(--font-body); font-size: 15px; color: var(--muted); }
+  .delta { font-size: 12px; font-weight: 800; padding: 6px 11px; border-radius: 99px; background: var(--surface-2); color: var(--muted); }
+  .delta.down { background: color-mix(in srgb, var(--good) 16%, var(--surface)); color: var(--good); }
   #weightChart { width: 100%; height: 84px; display: block; margin-top: 12px; }
   .weight-form { display: flex; gap: 8px; margin-top: 12px; }
-  .field-input {
-    width: 100%; min-width: 0; border: 1.5px solid transparent; background: var(--surface-2); border-radius: 14px;
-    padding: 12px 14px; min-height: 48px; font-size: 16px; transition: border-color .2s, background .2s;
-  }
+  .field-input { width: 100%; min-width: 0; border: 2px solid transparent; background: var(--surface-2); border-radius: 16px; padding: 12px 14px; min-height: 50px; font-size: 16px; font-weight: 700; transition: border-color .2s, background .2s; }
+  .field-input::placeholder { color: var(--muted); font-weight: 600; }
   .field-input:focus { border-color: var(--accent); background: var(--surface); outline: none; }
-  .btn { min-height: 48px; padding: 0 20px; border-radius: 14px; font-weight: 700; }
-  .btn.primary { background: var(--accent); color: var(--accent-ink); }
+  .btn { min-height: 50px; padding: 0 22px; border-radius: 16px; font-weight: 800; }
+  .btn.primary { background: linear-gradient(150deg, var(--accent), var(--accent-2)); color: var(--accent-ink); box-shadow: 0 8px 18px color-mix(in srgb, var(--accent-2) 30%, transparent); }
   .btn.ghost { background: var(--surface-2); }
 
-  /* Floating add button */
-  .fab {
-    position: fixed; left: 50%; transform: translateX(-50%); z-index: 6;
-    bottom: calc(18px + env(safe-area-inset-bottom, 0px));
-    display: inline-flex; align-items: center; gap: 8px; padding: 0 22px; height: 54px; border-radius: 99px;
-    background: var(--fg); color: var(--bg); font-weight: 700; font-size: 15px;
-    box-shadow: 0 12px 30px rgba(0, 0, 0, .25);
-  }
-  .fab:active { transform: translateX(-50%) scale(.96); }
-  .fab svg { width: 18px; height: 18px; }
+  /* Floating add */
+  .fab { position: fixed; left: 50%; transform: translateX(-50%); z-index: 6; bottom: calc(18px + env(safe-area-inset-bottom, 0px));
+    display: inline-flex; align-items: center; gap: 8px; padding: 0 24px; height: 56px; border-radius: 99px;
+    background: linear-gradient(150deg, var(--accent), var(--accent-2)); color: #fff; font-weight: 800; font-size: 16px;
+    box-shadow: 0 14px 30px color-mix(in srgb, var(--accent-2) 45%, transparent); }
+  .fab:active { transform: translateX(-50%) scale(.94); }
+  .fab svg { width: 20px; height: 20px; }
 
-  /* Bottom sheets */
-  dialog.sheet {
-    border: 0; padding: 0; margin: auto auto 0; width: 100%; max-width: 560px; max-height: 92vh;
-    background: var(--surface); color: var(--fg); border-radius: 28px 28px 0 0;
-    box-shadow: 0 -10px 40px rgba(0, 0, 0, .2); overflow-y: auto;
-  }
-  dialog.sheet[open] { animation: up .28s cubic-bezier(.2, .8, .2, 1); }
-  dialog.sheet::backdrop { background: rgba(8, 14, 11, .45); backdrop-filter: blur(2px); }
+  /* Sheets */
+  dialog.sheet { border: 0; padding: 0; margin: auto auto 0; width: 100%; max-width: 560px; max-height: 92vh; overflow-y: auto;
+    background: var(--surface); color: var(--fg); border-radius: 30px 30px 0 0; box-shadow: 0 -10px 40px rgba(0, 0, 0, .2); }
+  dialog.sheet[open] { animation: up .32s cubic-bezier(.2, .9, .3, 1.05); }
+  dialog.sheet::backdrop { background: rgba(25, 12, 40, .45); backdrop-filter: blur(3px); }
   @keyframes up { from { transform: translateY(100%); } to { transform: none; } }
   .sheet-body { padding: 10px 20px calc(20px + env(safe-area-inset-bottom, 0px)); display: grid; gap: 14px; }
-  .grab { width: 40px; height: 5px; border-radius: 99px; background: var(--line); margin: 0 auto 4px; }
-  .sheet h2 { font-size: 20px; }
-  .seg { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; background: var(--surface-2); padding: 4px; border-radius: 14px; }
-  .seg button { padding: 9px 0; border-radius: 10px; font-size: 13px; font-weight: 600; color: var(--muted); }
-  .seg button[aria-pressed="true"] { background: var(--surface); color: var(--fg); box-shadow: var(--shadow); }
+  .grab { width: 44px; height: 5px; border-radius: 99px; background: var(--line); margin: 0 auto 4px; }
+  .sheet h2 { font-size: 22px; }
+  .seg { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+  .seg button { padding: 10px 0; border-radius: 14px; font-size: 13px; font-weight: 800; color: var(--muted); background: var(--surface-2); }
+  .seg button[aria-pressed="true"] { background: var(--mc); color: #fff; box-shadow: 0 6px 14px color-mix(in srgb, var(--mc) 35%, transparent); }
   .grid2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
-  .fld label { display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; color: var(--muted); margin-bottom: 5px; }
-  .estimate { font-size: 13px; color: var(--muted); background: var(--surface-2); border-radius: 12px; padding: 10px 12px; }
+  .fld label { display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 800; color: var(--muted); margin-bottom: 5px; }
+  .estimate { font-size: 13px; color: var(--muted); background: var(--surface-2); border-radius: 14px; padding: 10px 12px; }
   .estimate b { color: var(--fg); }
   .sheet-actions { display: grid; grid-template-columns: auto 1fr; gap: 10px; }
   .targets { display: grid; grid-template-columns: auto minmax(0, 1fr) minmax(0, 1fr); gap: 8px 10px; align-items: center; }
-  .targets .h { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; font-weight: 600; }
-  .targets > label { font-weight: 600; font-size: 14px; display: flex; align-items: center; }
+  .targets .h { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; font-weight: 800; }
+  .targets > label { font-weight: 800; font-size: 14px; display: flex; align-items: center; }
   .check { font-size: 12px; color: var(--muted); }
-  .check.warn { color: var(--danger); font-weight: 600; }
+  .check.warn { color: var(--danger); font-weight: 800; }
 
-  @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after { animation: none !important; transition: none !important; }
-  }
+  @media (max-width: 380px) { .ring { width: 120px; height: 120px; } .ring svg { width: 120px; height: 120px; } .summary .val { font-size: 20px; } }
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
 </style>
 </head>
 <body>
 
+<div class="sunrise" aria-hidden="true"></div>
 <div class="app">
-  <div class="top">
-    <div class="bar">
-      <div class="brand">
-        <h1>Stay Healthy</h1>
-        <div class="sync" id="sync" data-state="wait">Connecting…</div>
-      </div>
-      <button class="icon-btn" id="goalsBtn" aria-label="Daily targets">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.2" fill="currentColor"/></svg>
-      </button>
+  <div class="bar">
+    <div class="brand">
+      <div class="hello" id="hello">Hello</div>
+      <h1>Stay Healthy</h1>
+      <div class="sync" id="sync" data-state="wait">Connecting…</div>
     </div>
+    <button class="icon-btn" id="goalsBtn" aria-label="Daily targets">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.3" fill="currentColor"/></svg>
+    </button>
+  </div>
+
+  <div>
     <div class="month">
       <b id="monthLabel"></b>
       <div class="nav">
         <button class="chip" id="todayBtn" hidden>Today</button>
-        <button class="arrow" id="prevWeek" aria-label="Previous week">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M15 6l-6 6 6 6"/></svg>
-        </button>
-        <button class="arrow" id="nextWeek" aria-label="Next week">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg>
-        </button>
+        <button class="arrow" id="prevWeek" aria-label="Previous week"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M15 6l-6 6 6 6"/></svg></button>
+        <button class="arrow" id="nextWeek" aria-label="Next week"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg></button>
       </div>
     </div>
     <div class="week" id="week"></div>
   </div>
 
-  <section class="hero" aria-label="Calories today">
-    <div class="ring">
-      <svg width="150" height="150" viewBox="0 0 150 150" aria-hidden="true">
-        <defs>
-          <linearGradient id="ringGrad" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0" style="stop-color: var(--hero-glow)"/>
-            <stop offset="1" style="stop-color: var(--hero-fg)"/>
-          </linearGradient>
-        </defs>
-        <circle cx="75" cy="75" r="63" fill="none" style="stroke: var(--hero-track)" stroke-width="14"/>
-        <circle id="ringFg" cx="75" cy="75" r="63" fill="none" stroke="url(#ringGrad)" stroke-width="14"
-                stroke-linecap="round" stroke-dasharray="395.84" stroke-dashoffset="395.84"
-                style="transition: stroke-dashoffset .6s cubic-bezier(.2,.8,.2,1)"/>
-      </svg>
-      <div class="center">
-        <div class="big num" id="kcalLeftBig">0</div>
-        <div class="small" id="kcalLeftLbl">kcal left</div>
+  <section class="card" aria-label="Today's summary">
+    <div class="card-head"><h2 id="dayTitle">Today</h2><span class="sub">Walk with Pip to your goal</span></div>
+    <div class="trail">
+      <div class="bubble" id="bubble" role="status" aria-live="polite">Hi, I'm Pip!</div>
+      <div class="path">
+        <div class="path-fill" id="pathFill"></div>
+        <svg class="flag" viewBox="0 0 22 30" aria-hidden="true"><rect x="2" y="2" width="2.5" height="28" rx="1.2" fill="var(--muted)"/><path d="M4.5 3h14l-3.5 5 3.5 5h-14z" fill="var(--accent-2)"/></svg>
+        <div class="fox-wrap" id="foxWrap">
+          <svg class="fox" id="fox" data-mood="sleepy" viewBox="0 0 64 64" aria-label="Pip the fox">
+            <g class="tail"><path d="M42 50 C56 50 63 38 56 28 C56 38 50 44 40 44 Z" fill="var(--fox)"/><path d="M56 28 C60 32 61 38 58 43 C57 37 57 32 56 28 Z" fill="var(--fox-cream)"/></g>
+            <rect class="leg-a" x="22" y="53" width="5.5" height="9" rx="2.7" fill="var(--fox-dark)"/>
+            <rect class="leg-b" x="33" y="53" width="5.5" height="9" rx="2.7" fill="var(--fox-dark)"/>
+            <ellipse cx="30" cy="48" rx="14" ry="11" fill="var(--fox)"/>
+            <ellipse cx="30" cy="51" rx="7.5" ry="7" fill="var(--fox-cream)"/>
+            <path d="M16 20 L18 4 L28 13 Z" fill="var(--fox)"/><path d="M19 16 L20 8 L25 13 Z" fill="var(--fox-dark)"/>
+            <path d="M44 20 L42 4 L32 13 Z" fill="var(--fox)"/><path d="M41 16 L40 8 L35 13 Z" fill="var(--fox-dark)"/>
+            <path d="M13 23 C13 13 21 10 30 10 C39 10 47 13 47 23 C47 33 39 39 30 39 C21 39 13 33 13 23 Z" fill="var(--fox)"/>
+            <path d="M17 27 C22 27 26 29 30 35 C34 29 38 27 43 27 C43 34 37 39 30 39 C23 39 17 34 17 27 Z" fill="var(--fox-cream)"/>
+            <circle cx="20.5" cy="29" r="2.4" fill="#ff8fa8" opacity=".75"/><circle cx="39.5" cy="29" r="2.4" fill="#ff8fa8" opacity=".75"/>
+            <ellipse cx="30" cy="33.5" rx="2.4" ry="1.7" fill="var(--fox-ink)"/>
+            <!-- moods -->
+            <g class="mood m-sleepy" fill="none" stroke="var(--fox-ink)" stroke-width="1.8" stroke-linecap="round">
+              <path d="M21.5 24 q3 2 6 0"/><path d="M32.5 24 q3 2 6 0"/><path d="M28 36.5 h4"/>
+            </g>
+            <g class="mood m-sleepy"><text class="zzz" x="46" y="10">z</text><text class="zzz z2" x="52" y="4">z</text></g>
+            <g class="mood m-happy">
+              <g class="eyes-open"><circle cx="24.5" cy="23.5" r="2.3" fill="var(--fox-ink)"/><circle cx="35.5" cy="23.5" r="2.3" fill="var(--fox-ink)"/>
+                <circle cx="25.3" cy="22.7" r=".8" fill="#fff"/><circle cx="36.3" cy="22.7" r=".8" fill="#fff"/></g>
+              <path d="M27 36 q3 2.6 6 0" fill="none" stroke="var(--fox-ink)" stroke-width="1.6" stroke-linecap="round"/>
+            </g>
+            <g class="mood m-cheer">
+              <path d="M21.5 25 q3 -4 6 0 M32.5 25 q3 -4 6 0" fill="none" stroke="var(--fox-ink)" stroke-width="1.9" stroke-linecap="round"/>
+              <path d="M26.5 35.5 q3.5 5 7 0 z" fill="#c2384f" stroke="var(--fox-ink)" stroke-width="1.2" stroke-linejoin="round"/>
+              <path class="spark" d="M6 8 l1.2 2.8 2.8 1.2 -2.8 1.2 -1.2 2.8 -1.2 -2.8 -2.8 -1.2 2.8 -1.2z" fill="#ffc83d"/>
+              <path class="spark s2" d="M55 6 l1 2.2 2.2 1 -2.2 1 -1 2.2 -1 -2.2 -2.2 -1 2.2 -1z" fill="#ff4f8b"/>
+              <path class="spark s3" d="M60 20 l.8 1.8 1.8 .8 -1.8 .8 -.8 1.8 -.8 -1.8 -1.8 -.8 1.8 -.8z" fill="#4c7dff"/>
+            </g>
+            <g class="mood m-worried">
+              <path d="M21.5 19.5 l5 1.6 M38.5 19.5 l-5 1.6" stroke="var(--fox-ink)" stroke-width="1.6" stroke-linecap="round"/>
+              <circle cx="24.5" cy="24" r="2.1" fill="var(--fox-ink)"/><circle cx="35.5" cy="24" r="2.1" fill="var(--fox-ink)"/>
+              <path d="M27 37 q3 -2.4 6 0" fill="none" stroke="var(--fox-ink)" stroke-width="1.6" stroke-linecap="round"/>
+              <path d="M44 15 q2 3 0 5 q-2 -2 0 -5z" fill="#7cc7ff"/>
+            </g>
+          </svg>
+        </div>
       </div>
+      <div class="trail-labels"><span>Start</span><span id="goalLabel">Goal</span></div>
     </div>
-    <div class="hero-side">
-      <div><div class="lbl">Eaten</div><div class="val num" id="kcalEaten">0 <small>kcal</small></div></div>
-      <div><div class="lbl">Daily target</div><div class="val num" id="kcalGoal">0 <small>kcal</small></div></div>
+
+    <div class="summary">
+      <div><div class="val num" id="kcalEaten">0</div><div class="lbl">Eaten</div></div>
+      <div class="ring">
+        <svg width="140" height="140" viewBox="0 0 140 140" aria-hidden="true">
+          <defs><linearGradient id="ringGrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" style="stop-color: var(--accent)"/><stop offset="1" style="stop-color: var(--accent-2)"/>
+          </linearGradient></defs>
+          <circle cx="70" cy="70" r="58" fill="none" style="stroke: var(--surface-2)" stroke-width="13"/>
+          <circle id="ringFg" cx="70" cy="70" r="58" fill="none" stroke="url(#ringGrad)" stroke-width="13"
+                  stroke-linecap="round" stroke-dasharray="364.42" stroke-dashoffset="364.42"
+                  style="transition: stroke-dashoffset .8s cubic-bezier(.4,0,.2,1)"/>
+        </svg>
+        <div class="center"><div class="big num" id="kcalLeftBig">0</div><div class="small" id="kcalLeftLbl">kcal left</div></div>
+      </div>
+      <div><div class="val num" id="kcalGoal">0</div><div class="lbl">Target</div></div>
     </div>
+    <div class="macros" id="macroBars"></div>
   </section>
 
-  <div class="tiles" id="tiles"></div>
+  <section class="card" aria-label="Meals">
+    <div class="card-head" style="margin-bottom:4px"><h2>Meals</h2><span class="sub">Blank kcal? We count 4 · 4 · 9 per gram</span></div>
+    <div id="meals"></div>
+  </section>
 
   <section class="card">
     <div class="card-head"><h2>Calorie split</h2><span class="sub">Today vs target</span></div>
     <div class="split" id="splitView"></div>
   </section>
-
-  <div class="section-title"><h2>Meals</h2><span class="sub">Kcal blank? Worked out as 4 · 4 · 9 per gram</span></div>
-  <div class="grid" id="meals" style="display:grid; gap:12px"></div>
 
   <section class="card">
     <div class="card-head"><h2>Body weight</h2><span class="sub" id="wCount">0 entries</span></div>
@@ -307,7 +377,7 @@
 </div>
 
 <button class="fab" id="fab">
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
   Add food
 </button>
 
@@ -491,10 +561,15 @@
   const dayHasFood = k => { const d = days[k]; return !!d && MEALS.some(m => (d[m.id] || []).length); };
 
   // ---------- Render ----------
+  const MEAL_SHARE = { breakfast: .25, lunch: .35, dinner: .30, snack: .10 };
+  const greeting = () => { const h = new Date().getHours(); return h < 12 ? 'Good morning' : h < 18 ? 'Good afternoon' : 'Good evening'; };
+
   function renderHeader() {
     const sel = fromKey(currentDate), today = toKey(new Date());
+    $('hello').textContent = greeting();
     $('monthLabel').textContent = sel.toLocaleDateString(undefined, { month: 'long', year: 'numeric' });
     $('todayBtn').hidden = currentDate === today;
+    $('dayTitle').textContent = currentDate === today ? 'Today' : sel.toLocaleDateString(undefined, { weekday: 'long', day: 'numeric', month: 'short' });
     const offset = (sel.getDay() + 6) % 7; // Monday first
     const start = shiftDay(currentDate, -offset);
     let html = '';
@@ -508,34 +583,72 @@
     $('week').innerHTML = html;
   }
 
-  function ring(r, stroke, pct, color, track) {
-    const c = 2 * Math.PI * r, size = (r + stroke / 2) * 2;
-    return '<svg width="' + size + '" height="' + size + '" viewBox="0 0 ' + size + ' ' + size + '" aria-hidden="true">' +
-      '<circle cx="' + size / 2 + '" cy="' + size / 2 + '" r="' + r + '" fill="none" stroke="' + track + '" stroke-width="' + stroke + '"/>' +
-      '<circle cx="' + size / 2 + '" cy="' + size / 2 + '" r="' + r + '" fill="none" stroke="' + color + '" stroke-width="' + stroke +
-      '" stroke-linecap="round" stroke-dasharray="' + c.toFixed(2) + '" stroke-dashoffset="' + (c * (1 - Math.min(pct, 1))).toFixed(2) + '"/></svg>';
+  // ---------- Pip the fox ----------
+  let lastPos = null, walkTimer = 0, flashUntil = 0, flashTimer = 0;
+  function placeOnTrail(pos) {
+    const p = (pos * 100).toFixed(2) + '%';
+    $('foxWrap').style.left = 'clamp(22px, ' + p + ', calc(100% - 22px))';
+    $('pathFill').style.width = p;
+    const b = $('bubble');
+    b.style.left = p;
+    b.style.setProperty('--bx', 'translateX(-' + p + ')');
+    b.style.setProperty('--tail', 'clamp(18px, ' + p + ', calc(100% - 18px))');
+  }
+  function pipSays(kcal, goal) {
+    const isToday = currentDate === toKey(new Date());
+    const pct = goal ? kcal / goal : 0;
+    if (!kcal) return ['sleepy', isToday ? 'Zzz… log your first meal to wake me up!' : 'Nothing logged on this day yet.'];
+    if (pct > 1.05) return ['worried', 'A bit over: ' + fmt(kcal - goal) + ' kcal. Tomorrow is a fresh start!'];
+    if (pct >= .92) return ['cheer', 'Goal reached! You nailed it today.'];
+    if (pct >= .5) return ['happy', 'Over halfway! ' + fmt(goal - kcal) + ' kcal to go.'];
+    return ['happy', 'Nice start! Let’s keep walking together.'];
+  }
+  function renderPip(kcal, goal) {
+    const pos = goal ? Math.max(0, Math.min(kcal / goal, 1)) : 0;
+    const wrap = $('foxWrap');
+    if (lastPos !== null && Math.abs(pos - lastPos) > .002) {
+      wrap.classList.add('walking');
+      clearTimeout(walkTimer);
+      walkTimer = setTimeout(() => wrap.classList.remove('walking'), 950);
+    }
+    lastPos = pos;
+    placeOnTrail(pos);
+    $('pathFill').classList.toggle('over', goal > 0 && kcal > goal * 1.05);
+    const [mood, msg] = pipSays(kcal, goal);
+    $('fox').dataset.mood = mood;
+    if (Date.now() > flashUntil) $('bubble').textContent = msg;
+    $('goalLabel').textContent = fmt(goal) + ' kcal';
+  }
+  // A short reaction (jump + message) after the person logs something.
+  function pipReact(text) {
+    const wrap = $('foxWrap'), b = $('bubble');
+    flashUntil = Date.now() + 2600;
+    b.textContent = text;
+    b.classList.remove('pop'); void b.offsetWidth; b.classList.add('pop');
+    wrap.classList.remove('jump'); void wrap.offsetWidth; wrap.classList.add('jump');
+    clearTimeout(flashTimer);
+    flashTimer = setTimeout(() => { wrap.classList.remove('jump'); renderSummary(); }, 2700);
   }
 
   function renderSummary() {
     const d = days[currentDate] || emptyDay();
     const t = sum(MEALS.flatMap(m => d[m.id] || []));
     const g = settings.goals;
-    const C = 2 * Math.PI * 63;
+    const C = 2 * Math.PI * 58;
     $('ringFg').style.strokeDashoffset = C * (1 - (g.kcal ? Math.min(t.kcal / g.kcal, 1) : 0));
     const left = g.kcal - t.kcal;
     $('kcalLeftBig').textContent = fmt(Math.abs(left));
-    $('kcalLeftLbl').innerHTML = left >= 0 ? 'kcal left' : '<span class="over">kcal over</span>';
-    $('kcalEaten').innerHTML = fmt(t.kcal) + ' <small>kcal</small>';
-    $('kcalGoal').innerHTML = fmt(g.kcal) + ' <small>kcal</small>';
+    $('kcalLeftLbl').textContent = left >= 0 ? 'kcal left' : 'kcal over';
+    $('kcalLeftLbl').classList.toggle('over', left < 0);
+    $('kcalEaten').textContent = fmt(t.kcal);
+    $('kcalGoal').textContent = fmt(g.kcal);
 
-    $('tiles').innerHTML = MACROS.map(m => {
+    $('macroBars').innerHTML = MACROS.map(m => {
       const v = t[m.key], goal = g[m.key], over = goal && v > goal;
-      const pct = goal ? v / goal : 0;
-      return '<div class="tile"><div class="mini">' + ring(19, 5, pct, over ? 'var(--danger)' : m.color, 'var(--surface-2)') +
-        '<span class="num">' + Math.round(pct * 100) + '%</span></div>' +
-        '<div class="name">' + m.label + '</div>' +
-        '<div class="amt num">' + fmt(v) + '<small> / ' + fmt(goal) + ' g</small></div>' +
-        '<div class="left num' + (over ? ' over' : '') + '">' + (over ? fmt(v - goal) + ' g over' : fmt(goal - v) + ' g left') + '</div></div>';
+      const w = goal ? Math.min(v / goal * 100, 100) : 0;
+      return '<div class="macro"><div class="name">' + m.label + '</div>' +
+        '<div class="bar-track"><span style="width:' + w + '%;background:' + (over ? 'var(--danger)' : m.color) + '"></span></div>' +
+        '<div class="amt num' + (over ? ' over' : '') + '">' + fmt(v) + ' / ' + fmt(goal) + ' g</div></div>';
     }).join('');
 
     const macroKcal = MACROS.map(m => t[m.key] * KCAL_PER_G[m.key]);
@@ -549,24 +662,31 @@
       '<div class="legend num">' + MACROS.map((m, i) =>
         '<span><span class="dot" style="background:' + m.color + '"></span>' + m.label + ' <b>' +
         (total ? Math.round(actual[i]) + '%' : '–') + '</b> / ' + fmt1(g.pct[m.key]) + '%</span>').join('') + '</div>';
+
+    renderPip(t.kcal, g.kcal);
   }
 
   function renderMeals() {
     const d = days[currentDate] || emptyDay();
+    const goal = settings.goals.kcal;
     $('meals').innerHTML = MEALS.map(m => {
       const foods = d[m.id] || [];
-      const items = foods.length ? foods.map((f, i) =>
+      const kc = sum(foods).kcal, target = Math.round(goal * MEAL_SHARE[m.id]);
+      const w = target ? Math.min(kc / target * 100, 100) : 0;
+      const items = foods.map((f, i) =>
         '<div class="item"><div><div class="name">' + esc(f.name) + '</div>' +
         '<div class="m num">C ' + fmt1(f.carbs) + ' g · P ' + fmt1(f.protein) + ' g · F ' + fmt1(f.fat) + ' g</div></div>' +
         '<div class="kc num">' + fmt(f.kcal) + ' kcal</div>' +
         '<button class="del" data-del="' + m.id + ':' + i + '" aria-label="Remove ' + esc(f.name) + '">' +
-        '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>'
-      ).join('') : '<div class="empty">Nothing logged yet</div>';
-      return '<section class="card meal"><div class="meal-head">' +
-        '<div class="meal-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">' + ICONS[m.id] + '</svg></div>' +
-        '<div class="t"><h3>' + m.label + '</h3><div class="sub num">' + fmt(sum(foods).kcal) + ' kcal' + (foods.length ? ' · ' + foods.length + (foods.length === 1 ? ' item' : ' items') : '') + '</div></div>' +
-        '<button class="add-sm" data-add="' + m.id + '" aria-label="Add food to ' + m.label + '">+</button></div>' +
-        '<div class="items">' + items + '</div></section>';
+        '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>'
+      ).join('');
+      return '<div class="meal-row" style="--mc:var(--m-' + m.id + ')"><div class="meal-head">' +
+        '<div class="meal-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' + ICONS[m.id] + '</svg></div>' +
+        '<div class="t"><h3>' + m.label + '</h3><div class="sub num">' + fmt(kc) + ' / ' + fmt(target) + ' kcal</div>' +
+        '<div class="bar-track"><span style="width:' + w + '%;background:var(--mc)"></span></div></div>' +
+        '<button class="add-round" data-add="' + m.id + '" aria-label="Add food to ' + m.label + '">' +
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button></div>' +
+        items + '</div>';
     }).join('');
   }
 
@@ -580,11 +700,8 @@
     const recent = all.filter(e => e.k >= from && e.k <= currentDate);
     const svg = $('weightChart'), chip = $('wChange');
     chip.className = 'delta num';
-    if (recent.length < 2) {
-      chip.textContent = 'Log 2 days to see your trend';
-      svg.innerHTML = '';
-      return;
-    }
+    svg.style.display = recent.length < 2 ? 'none' : 'block';
+    if (recent.length < 2) { chip.textContent = 'Log 2 days to see your trend'; svg.innerHTML = ''; return; }
     const diff = recent[recent.length - 1].v - recent[0].v;
     chip.textContent = (diff > 0 ? '▲ ' : diff < 0 ? '▼ ' : '') + fmt1(Math.abs(diff)) + ' kg in 30 days';
     if (diff < 0) chip.classList.add('down');
@@ -595,21 +712,22 @@
     const line = pts.map(p => p[0].toFixed(1) + ',' + p[1].toFixed(1)).join(' ');
     const last = pts[pts.length - 1];
     svg.innerHTML =
-      '<defs><linearGradient id="wg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color:var(--accent);stop-opacity:.25"/>' +
-      '<stop offset="1" style="stop-color:var(--accent);stop-opacity:0"/></linearGradient></defs>' +
+      '<defs><linearGradient id="wg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color:var(--m-dinner);stop-opacity:.28"/>' +
+      '<stop offset="1" style="stop-color:var(--m-dinner);stop-opacity:0"/></linearGradient></defs>' +
       '<polygon points="' + pts[0][0] + ',84 ' + line + ' ' + last[0] + ',84" fill="url(#wg)"/>' +
-      '<polyline points="' + line + '" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linejoin="round" vector-effect="non-scaling-stroke"/>';
+      '<polyline points="' + line + '" fill="none" stroke="var(--m-dinner)" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke"/>';
   }
 
   function renderDay() { renderHeader(); renderSummary(); renderMeals(); }
   function render() { renderDay(); renderWeight(); }
 
   // ---------- Events ----------
-  function goTo(k) { currentDate = k; render(); subscribeDay(k); }
+  function goTo(k) { currentDate = k; flashUntil = 0; render(); subscribeDay(k); }
   $('week').addEventListener('click', e => { const b = e.target.closest('[data-day]'); if (b) goTo(b.dataset.day); });
   $('prevWeek').onclick = () => goTo(shiftDay(currentDate, -7));
   $('nextWeek').onclick = () => goTo(shiftDay(currentDate, 7));
   $('todayBtn').onclick = () => goTo(toKey(new Date()));
+  $('fox').addEventListener('click', () => pipReact(['Hi! I’m Pip.', 'Keep logging, I’ll keep walking!', 'Remember to drink some water.', 'You’re doing great.'][Math.floor(Math.random() * 4)]));
 
   // Close a sheet with its Cancel button or a tap on the backdrop.
   document.querySelectorAll('dialog.sheet').forEach(dlg => {
@@ -620,7 +738,7 @@
   const foodSheet = $('foodSheet');
   function renderSeg() {
     $('mealSeg').innerHTML = MEALS.map(m =>
-      '<button type="button" data-meal="' + m.id + '" aria-pressed="' + (m.id === sheetMeal) + '">' + m.label + '</button>').join('');
+      '<button type="button" style="--mc:var(--m-' + m.id + ')" data-meal="' + m.id + '" aria-pressed="' + (m.id === sheetMeal) + '">' + m.label + '</button>').join('');
     $('foodSubmit').textContent = 'Add to ' + MEALS.find(m => m.id === sheetMeal).label.toLowerCase();
   }
   function updateEstimate() {
@@ -630,16 +748,16 @@
       ? 'Using your kcal: <b>' + fmt(num($('fKcal').value)) + ' kcal</b>' + (est ? ' (macros say ' + fmt(est) + ')' : '')
       : est ? 'Worked out from macros: <b>' + fmt(est) + ' kcal</b>' : 'Fill in the macros and kcal is worked out for you.';
   }
+  function defaultMeal() {
+    const h = new Date().getHours();
+    return h < 11 ? 'breakfast' : h < 15 ? 'lunch' : h < 18 ? 'snack' : 'dinner';
+  }
   function openFood(meal) {
     sheetMeal = meal || defaultMeal();
     $('foodForm').reset();
     renderSeg(); updateEstimate();
     foodSheet.showModal();
     setTimeout(() => $('fName').focus(), 50);
-  }
-  function defaultMeal() {
-    const h = new Date().getHours();
-    return h < 11 ? 'breakfast' : h < 15 ? 'lunch' : h < 18 ? 'snack' : 'dinner';
   }
   $('fab').onclick = () => openFood();
   $('mealSeg').addEventListener('click', e => { const b = e.target.closest('[data-meal]'); if (b) { sheetMeal = b.dataset.meal; renderSeg(); } });
@@ -654,6 +772,7 @@
     day(currentDate)[sheetMeal].push({ name, kcal, protein, carbs, fat });
     foodSheet.close();
     saveDay(currentDate); renderDay();
+    pipReact('Yum! +' + fmt(kcal) + ' kcal');
   });
 
   $('meals').addEventListener('click', e => {
@@ -674,6 +793,7 @@
     else delete settings.weights[currentDate];
     $('weightInput').blur();
     saveSettings(); renderWeight();
+    if (isFinite(v) && v > 0) pipReact('Weight saved: ' + fmt1(settings.weights[currentDate]) + ' kg');
   });
 
   // Daily targets sheet
@@ -709,7 +829,8 @@
     MACROS.forEach(m => { g[m.key] = num(gIn(m.key).value); g.pct[m.key] = num(pctIn(m.key).value); });
     settings.goals = g;
     goalsSheet.close();
-    saveSettings(); renderSummary();
+    saveSettings(); renderSummary(); renderMeals();
+    pipReact('New targets saved!');
   });
 
   loadLocal();
